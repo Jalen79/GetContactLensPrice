@@ -4,6 +4,9 @@ import time
 
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.support.select import Select
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
 
@@ -336,11 +339,12 @@ def LaboPowerBCQtyContactlens(counter, Url, CellList):
             dropdown.select_by_index(1)
 
             try:
-                dropdown = Select(chrome.find_element_by_xpath('/html/body/div[1]/div[1]/form/article/section/section[1]/div[1]/div[2]/div[2]/div/table/tbody/tr[2]/td/select'))
+                dropdown = Select(WebDriverWait(chrome, 20).until(EC.visibility_of_element_located((By.XPATH, "/html/body/div[1]/div[1]/form/article/section/section[1]/div[1]/div[2]/div[2]/div/table/tbody/tr[2]/td/select']"))))
             except:
                 dropdown = Select(chrome.find_element_by_name('selRightEyePWR'))
                 dropdown.select_by_index(2)
             else:
+                # dropdown = Select(WebDriverWait(chrome, 20).until(EC.visibility_of_element_located((By.XPATH, "/html/body/div[1]/div[1]/form/article/section/section[1]/div[1]/div[2]/div[2]/div/table/tbody/tr[2]/td/select']"))))
                 dropdown.select_by_index(2)
 
             try:
@@ -359,8 +363,7 @@ def LaboPowerBCQtyContactlens(counter, Url, CellList):
             dropdown.select_by_index(1)
 
             try:
-                dropdown = Select(chrome.find_element_by_xpath(
-                    '/html/body/div[1]/div[1]/form/article/section/section[1]/div[1]/div[2]/div[2]/div[1]/table/tbody/tr[3]/td/select'))
+                dropdown = Select(WebDriverWait(chrome, 20).until(EC.visibility_of_element_located((By.XPATH, "/html/body/div[1]/div[1]/form/article/section/section[1]/div[1]/div[2]/div[2]/div/table/tbody/tr[2]/td/select']"))))
             except:
                 dropdown = Select(chrome.find_element_by_name('selRightEyePWR'))
                 dropdown.select_by_index(2)
@@ -381,7 +384,7 @@ def LaboPowerBCQtyContactlens(counter, Url, CellList):
 
             chrome.find_element_by_id('cartbtn').click()
 
-        time.sleep(1)
+        time.sleep(2)
         chrome.find_element_by_xpath('/html/body/div[1]/div[1]/article/section[2]/section/form[2]/p/input').click()
         time.sleep(1)
 
@@ -431,145 +434,145 @@ if __name__ == '__main__':
     options.add_argument("--start-maximized")
 
     chrome: WebDriver = webdriver.Chrome('./chromedriver', options=options)
+    #
+    # chrome.get("https://www.lensmode.com/auth/login/redirectUrl/%252Fmypage%252Findex%252F/")
+    #
+    # chrome.find_element_by_xpath("/html/body/div[3]/div[2]/div[1]/article/form[1]/table/tbody/tr[2]/td[2]/input[1]").send_keys('lensmamajp@gmail.com')
+    # chrome.find_element_by_xpath("/html/body/div[3]/div[2]/div[1]/article/form[1]/table/tbody/tr[3]/td[2]/input").send_keys('kk20201201')
+    # chrome.find_element_by_xpath('/html/body/div[3]/div[2]/div[1]/article/form[1]/table/tbody/tr[4]/td/input[2]').click()
+    #
+    # # Dailies Total 1
+    # counter = [1, 2, 4, 6, 8]
+    # Url = "https://www.lensmode.com/goods/index/gc/C1T/"
+    # CellList = ["","C3","D3","","E3","","F3","","G3"]
+    # PowerOnlyContactlens(counter, Url, CellList)
+    #
+    # # 1 Day Acuvue Moist
+    # counter = [1, 2, 4, 6, 8]
+    # Url = "https://www.lensmode.com/goods/index/gc/J1M/"
+    # CellList = ["", "R3", "S3", "", "T3", "", "U3", "", "V3"]
+    # PowerBCContactlens(counter, Url, CellList)
+    #
+    # # 1 Day Acuvue Moist 90 PACK
+    # counter = [1, 2, 4]
+    # Url = "https://www.lensmode.com/goods/index/gc/J1M90/"
+    # CellList = ["", "W3", "X3", "", "Y3"]
+    # PowerBCContactlens(counter, Url, CellList)
+    #
+    # # 1 Day Acuvue Trueye
+    # counter = [1, 2, 4, 6, 8]
+    # Url = "https://www.lensmode.com/goods/index/gc/J1T/"
+    # CellList = ["", "M3", "N3", "", "O3", "", "P3", "", "Q3"]
+    # PowerBCContactlens(counter, Url, CellList)
+    #
+    # # 1 Day Acuvue Oasys
+    # counter = [1, 2, 4, 6, 8]
+    # Url = "https://www.lensmode.com/goods/index/gc/JOS1/"
+    # CellList = ["", "H3", "I3", "", "J3", "", "K3", "", "L3"]
+    # PowerBCContactlens(counter, Url, CellList)
+    #
+    # # Myday
+    # counter = [1, 2, 4, 6, 8]
+    # Url = "https://www.lensmode.com/goods/index/gc/CM1/"
+    # CellList = ["", "AE3", "AF3", "", "AG3", "", "AH3", "", "AI3"]
+    # PowerOnlyContactlens(counter, Url, CellList)
+    #
+    # # Proclear 1 Day
+    # counter = [1, 2, 4, 6, 8]
+    # Url = "https://www.lensmode.com/goods/index/gc/CP1/"
+    # CellList = ["", "AJ3", "AK3", "", "AL3", "", "AM3", "", "AN3"]
+    # PowerOnlyContactlens(counter, Url, CellList)
+    #
+    # # Biomedics 1 Day
+    # counter = [1, 2, 4, 6, 8]
+    # Url = "https://www.lensmode.com/goods/index/gc/O1N/"
+    # CellList = ["", "AO3", "AP3", "", "AQ3", "", "AR3", "", "AS3"]
+    # PowerOnlyContactlens(counter, Url, CellList)
+    #
+    # # 1 Day Biotrue
+    # counter = [1, 2, 4, 6, 8]
+    # Url = "https://www.lensmode.com/goods/index/gc/B1T/"
+    # CellList = ["", "AY3", "AZ3", "", "BA3", "", "BB3", "", "BC3"]
+    # PowerOnlyContactlens(counter, Url, CellList)
+    #
+    # # Medalist 1 day plus
+    # counter = [1, 2, 4, 6, 8]
+    # Url = "https://www.lensmode.com/goods/index/gc/B1N/"
+    # CellList = ["", "AT3", "AU3", "", "AV3", "", "AW3", "", "AX3"]
+    # PowerOnlyContactlens(counter, Url, CellList)
+    #
+    # # 1 Day Acuvue Define Vivid
+    # counter = [1, 2, 4, 6, 8]
+    # Url = "https://www.lensmode.com/goods/index/gc/J1MV/"
+    # CellList = ["", "Z3", "AA3", "", "AB3", "", "AC3", "", "AD3"]
+    # PowerOnlyContactlens(counter, Url, CellList)
+    #
+    # # WEBSITE: Lenszero
+    #
+    # chrome.get("https://www.lenszero.com/auth/login/redirectUrl/%252Fmypage%252Findex%252F/")
+    #
+    # chrome.find_element_by_xpath(
+    #     "/html/body/div[3]/div[2]/div[1]/article/form[1]/table/tbody/tr[2]/td[2]/input[1]").send_keys(
+    #     'lensmamajp@gmail.com')
+    # chrome.find_element_by_xpath(
+    #     "/html/body/div[3]/div[2]/div[1]/article/form[1]/table/tbody/tr[3]/td[2]/input").send_keys('kk20201201')
+    # chrome.find_element_by_xpath(
+    #     '/html/body/div[3]/div[2]/div[1]/article/form[1]/table/tbody/tr[4]/td/input[2]').click()
+    #
+    # # 1 Day Acuvue Define RC
+    # counter = [1, 2, 4, 6, 8]
+    # Url = "https://www.lenszero.com/goods/index/gc/J1MC/"
+    # CellList = ["", "Z5", "AA5", "", "AB5", "", "AC5", "", "AD5"]
+    # PowerOnlyContactlens(counter, Url, CellList)
+    #
+    #
+    # # Dailies Total 1
+    # counter = [1, 2, 4, 6, 8]
+    # Url = "https://www.lenszero.com/goods/index/gc/C1T/"
+    # CellList = ["","C5","D5","","E5","","F5","","G5"]
+    # PowerOnlyContactlens(counter, Url, CellList)
+    #
+    # # 1 Day Acuvue Moist
+    # counter = [1, 2, 4, 6, 8]
+    # Url = "https://www.lenszero.com/goods/index/gc/J1M/"
+    # CellList = ["", "R5", "S5", "", "T5", "", "U5", "", "V5"]
+    # PowerBCContactlens(counter, Url, CellList)
+    #
+    # # 1 Day Acuvue Moist 90 PACK
+    # counter = [1, 2, 4]
+    # Url = "https://www.lenszero.com/goods/index/gc/J1M90/"
+    # CellList = ["", "W5", "X5", "", "Y5"]
+    # PowerBCContactlens(counter, Url, CellList)
+    #
+    # # 1 Day Acuvue Trueye
+    # counter = [1, 2, 4, 6, 8]
+    # Url = "https://www.lenszero.com/goods/index/gc/J1T/"
+    # CellList = ["", "M5", "N5", "", "O5", "", "P5", "", "Q5"]
+    # PowerBCContactlens(counter, Url, CellList)
+    #
+    # # 1 Day Acuvue Oasys
+    # counter = [1, 2, 4, 6, 8]
+    # Url = "https://www.lenszero.com/goods/index/gc/JOS1/"
+    # CellList = ["", "H5", "I5", "", "J5", "", "K5", "", "L5"]
+    # PowerBCContactlens(counter, Url, CellList)
+    #
+    # # Myday 無出售
+    # """
+    # counter = [1, 2, 4, 6, 8]
+    # Url = "https://www.lenszero.com/goods/index/gc/CM1/"
+    # CellList = ["", "AE5", "AF5", "", "AG5", "", "AH5", "", "AI5"]
+    # PowerOnlyContactlens(counter, Url, CellList)
+    # """
+    #
+    # # Proclear 1 Day
+    # """
+    # counter = [1, 2, 4, 6, 8]
+    # Url = "https://www.lenszero.com/goods/index/gc/CP1/"
+    # CellList = ["", "AJ5", "AK5", "", "AL5", "", "AM5", "", "AN5"]
+    # PowerOnlyContactlens(counter, Url, CellList)
+    # """
 
-    chrome.get("https://www.lensmode.com/auth/login/redirectUrl/%252Fmypage%252Findex%252F/")
-
-    chrome.find_element_by_xpath("/html/body/div[3]/div[2]/div[1]/article/form[1]/table/tbody/tr[2]/td[2]/input[1]").send_keys('lensmamajp@gmail.com')
-    chrome.find_element_by_xpath("/html/body/div[3]/div[2]/div[1]/article/form[1]/table/tbody/tr[3]/td[2]/input").send_keys('kk20201201')
-    chrome.find_element_by_xpath('/html/body/div[3]/div[2]/div[1]/article/form[1]/table/tbody/tr[4]/td/input[2]').click()
-
-    # Dailies Total 1
-    counter = [1, 2, 4, 6, 8]
-    Url = "https://www.lensmode.com/goods/index/gc/C1T/"
-    CellList = ["","C3","D3","","E3","","F3","","G3"]
-    PowerOnlyContactlens(counter, Url, CellList)
-
-    # 1 Day Acuvue Moist
-    counter = [1, 2, 4, 6, 8]
-    Url = "https://www.lensmode.com/goods/index/gc/J1M/"
-    CellList = ["", "R3", "S3", "", "T3", "", "U3", "", "V3"]
-    PowerBCContactlens(counter, Url, CellList)
-
-    # 1 Day Acuvue Moist 90 PACK
-    counter = [1, 2, 4]
-    Url = "https://www.lensmode.com/goods/index/gc/J1M90/"
-    CellList = ["", "W3", "X3", "", "Y3"]
-    PowerBCContactlens(counter, Url, CellList)
-
-    # 1 Day Acuvue Trueye
-    counter = [1, 2, 4, 6, 8]
-    Url = "https://www.lensmode.com/goods/index/gc/J1T/"
-    CellList = ["", "M3", "N3", "", "O3", "", "P3", "", "Q3"]
-    PowerBCContactlens(counter, Url, CellList)
-
-    # 1 Day Acuvue Oasys
-    counter = [1, 2, 4, 6, 8]
-    Url = "https://www.lensmode.com/goods/index/gc/JOS1/"
-    CellList = ["", "H3", "I3", "", "J3", "", "K3", "", "L3"]
-    PowerBCContactlens(counter, Url, CellList)
-
-    # Myday
-    counter = [1, 2, 4, 6, 8]
-    Url = "https://www.lensmode.com/goods/index/gc/CM1/"
-    CellList = ["", "AE3", "AF3", "", "AG3", "", "AH3", "", "AI3"]
-    PowerOnlyContactlens(counter, Url, CellList)
-
-    # Proclear 1 Day
-    counter = [1, 2, 4, 6, 8]
-    Url = "https://www.lensmode.com/goods/index/gc/CP1/"
-    CellList = ["", "AJ3", "AK3", "", "AL3", "", "AM3", "", "AN3"]
-    PowerOnlyContactlens(counter, Url, CellList)
-
-    # Biomedics 1 Day
-    counter = [1, 2, 4, 6, 8]
-    Url = "https://www.lensmode.com/goods/index/gc/O1N/"
-    CellList = ["", "AO3", "AP3", "", "AQ3", "", "AR3", "", "AS3"]
-    PowerOnlyContactlens(counter, Url, CellList)
-
-    # 1 Day Biotrue
-    counter = [1, 2, 4, 6, 8]
-    Url = "https://www.lensmode.com/goods/index/gc/B1T/"
-    CellList = ["", "AY3", "AZ3", "", "BA3", "", "BB3", "", "BC3"]
-    PowerOnlyContactlens(counter, Url, CellList)
-
-    # Medalist 1 day plus
-    counter = [1, 2, 4, 6, 8]
-    Url = "https://www.lensmode.com/goods/index/gc/B1N/"
-    CellList = ["", "AT3", "AU3", "", "AV3", "", "AW3", "", "AX3"]
-    PowerOnlyContactlens(counter, Url, CellList)
-
-    # 1 Day Acuvue Define Vivid
-    counter = [1, 2, 4, 6, 8]
-    Url = "https://www.lensmode.com/goods/index/gc/J1MV/"
-    CellList = ["", "Z3", "AA3", "", "AB3", "", "AC3", "", "AD3"]
-    PowerOnlyContactlens(counter, Url, CellList)
-
-    # WEBSITE: Lenszero
-
-    chrome.get("https://www.lenszero.com/auth/login/redirectUrl/%252Fmypage%252Findex%252F/")
-
-    chrome.find_element_by_xpath(
-        "/html/body/div[3]/div[2]/div[1]/article/form[1]/table/tbody/tr[2]/td[2]/input[1]").send_keys(
-        'lensmamajp@gmail.com')
-    chrome.find_element_by_xpath(
-        "/html/body/div[3]/div[2]/div[1]/article/form[1]/table/tbody/tr[3]/td[2]/input").send_keys('kk20201201')
-    chrome.find_element_by_xpath(
-        '/html/body/div[3]/div[2]/div[1]/article/form[1]/table/tbody/tr[4]/td/input[2]').click()
-
-    # 1 Day Acuvue Define RC
-    counter = [1, 2, 4, 6, 8]
-    Url = "https://www.lenszero.com/goods/index/gc/J1MC/"
-    CellList = ["", "Z5", "AA5", "", "AB5", "", "AC5", "", "AD5"]
-    PowerOnlyContactlens(counter, Url, CellList)
-
-
-    # Dailies Total 1
-    counter = [1, 2, 4, 6, 8]
-    Url = "https://www.lenszero.com/goods/index/gc/C1T/"
-    CellList = ["","C5","D5","","E5","","F5","","G5"]
-    PowerOnlyContactlens(counter, Url, CellList)
-
-    # 1 Day Acuvue Moist
-    counter = [1, 2, 4, 6, 8]
-    Url = "https://www.lenszero.com/goods/index/gc/J1M/"
-    CellList = ["", "R5", "S5", "", "T5", "", "U5", "", "V5"]
-    PowerBCContactlens(counter, Url, CellList)
-
-    # 1 Day Acuvue Moist 90 PACK
-    counter = [1, 2, 4]
-    Url = "https://www.lenszero.com/goods/index/gc/J1M90/"
-    CellList = ["", "W5", "X5", "", "Y5"]
-    PowerBCContactlens(counter, Url, CellList)
-
-    # 1 Day Acuvue Trueye
-    counter = [1, 2, 4, 6, 8]
-    Url = "https://www.lenszero.com/goods/index/gc/J1T/"
-    CellList = ["", "M5", "N5", "", "O5", "", "P5", "", "Q5"]
-    PowerBCContactlens(counter, Url, CellList)
-
-    # 1 Day Acuvue Oasys
-    counter = [1, 2, 4, 6, 8]
-    Url = "https://www.lenszero.com/goods/index/gc/JOS1/"
-    CellList = ["", "H5", "I5", "", "J5", "", "K5", "", "L5"]
-    PowerBCContactlens(counter, Url, CellList)
-
-    # Myday 無出售
-    """
-    counter = [1, 2, 4, 6, 8]
-    Url = "https://www.lenszero.com/goods/index/gc/CM1/"
-    CellList = ["", "AE5", "AF5", "", "AG5", "", "AH5", "", "AI5"]
-    PowerOnlyContactlens(counter, Url, CellList)
-    """
-
-    # Proclear 1 Day
-    """
-    counter = [1, 2, 4, 6, 8]
-    Url = "https://www.lenszero.com/goods/index/gc/CP1/"
-    CellList = ["", "AJ5", "AK5", "", "AL5", "", "AM5", "", "AN5"]
-    PowerOnlyContactlens(counter, Url, CellList)
-    """
-
-    WEBSITE: Lens-labo
+    #WEBSITE: Lens-labo
 
     chrome.get("https://www.lens-labo.com/login")
 
