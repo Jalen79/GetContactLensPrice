@@ -26,7 +26,8 @@ def PowerOnlyContactlens(counter, Url, CellList):
         # chrome.find_element_by_xpath('/html/body/div[3]/div[2]/article/article[1]/form/div/ul[2]/li/input[3]').click()
         chrome.find_element_by_class_name('btn_cart241').click()
         time.sleep(3)
-        chrome.find_element_by_xpath('/html/body/div[3]/div[2]/div/article/ul/li/ul/li/a').click()
+
+        chrome.find_element_by_class_name('btn_210').click()
         time.sleep(3)
         try:
             chrome.find_element_by_id('PMT031C').click()
@@ -36,7 +37,7 @@ def PowerOnlyContactlens(counter, Url, CellList):
                 time.sleep(1)
                 chrome.find_element_by_id('PMT031C').click()
             except:
-                time.sleep(2)
+                time.sleep(1)
 
                 chrome.find_element_by_xpath(
                     '/html/body/div[11]/div/div/div/div/div/div[1]/div/p').click()
@@ -339,7 +340,7 @@ def LaboPowerBCQtyContactlens(counter, Url, CellList):
             dropdown.select_by_index(1)
 
             try:
-                dropdown = Select(WebDriverWait(chrome, 20).until(EC.visibility_of_element_located((By.XPATH, "/html/body/div[1]/div[1]/form/article/section/section[1]/div[1]/div[2]/div[2]/div/table/tbody/tr[2]/td/select']"))))
+                dropdown = Select(WebDriverWait(chrome, 10).until(EC.visibility_of_element_located((By.XPATH, "/html/body/div[1]/div[1]/form/article/section/section[1]/div[1]/div[2]/div[2]/div/table/tbody/tr[2]/td/select']"))))
             except:
                 dropdown = Select(chrome.find_element_by_name('selRightEyePWR'))
                 dropdown.select_by_index(2)
@@ -363,7 +364,7 @@ def LaboPowerBCQtyContactlens(counter, Url, CellList):
             dropdown.select_by_index(1)
 
             try:
-                dropdown = Select(WebDriverWait(chrome, 20).until(EC.visibility_of_element_located((By.XPATH, "/html/body/div[1]/div[1]/form/article/section/section[1]/div[1]/div[2]/div[2]/div/table/tbody/tr[2]/td/select']"))))
+                dropdown = Select(WebDriverWait(chrome, 10).until(EC.visibility_of_element_located((By.XPATH, "/html/body/div[1]/div[1]/form/article/section/section[1]/div[1]/div[2]/div[2]/div/table/tbody/tr[2]/td/select']"))))
             except:
                 dropdown = Select(chrome.find_element_by_name('selRightEyePWR'))
                 dropdown.select_by_index(2)
@@ -426,6 +427,104 @@ def LaboPowerBCQtyContactlens(counter, Url, CellList):
             '/html/body/div[1]/div[1]/article/section[2]/section/form[1]/table/tbody/tr/td[5]/div/p/input').click()
 
 
+def BestLensPowerBcQtyContactlens(counter, Url, CellList):
+
+    for x in counter:
+
+        chrome.get(Url[x])
+
+        if x == 1:
+
+            try:
+                dropdown = Select(chrome.find_element_by_id('PWR'))
+                dropdown.select_by_index(1)
+            except:
+                time.sleep(1)
+                dropdown = Select(chrome.find_element_by_id('PWR'))
+                dropdown.select_by_index(1)
+            else:
+                pass
+
+            try:
+                dropdown = Select(chrome.find_element_by_name('NUM'))
+                dropdown.select_by_index(1)
+            except:
+                time.sleep(1)
+                dropdown = Select(chrome.find_element_by_name('NUM'))
+                dropdown.select_by_index(1)
+
+            else:
+                pass
+
+
+
+        elif x > 1:
+
+
+            try:
+                dropdown = Select(chrome.find_element_by_id('PWR'))
+                dropdown.select_by_index(1)
+            except:
+                time.sleep(1)
+                dropdown = Select(chrome.find_element_by_id('PWR'))
+                dropdown.select_by_index(1)
+            else:
+                pass
+
+            try:
+                dropdown = Select(chrome.find_element_by_id('PWR2'))
+                dropdown.select_by_index(1)
+            except:
+                dropdown = Select(chrome.find_element_by_id('PWR2'))
+                dropdown.select_by_index(1)
+            else:
+                pass
+
+        chrome.find_element_by_class_name('cart_btn').click()
+
+
+        chrome.find_element_by_class_name('link_btn').click()
+
+
+        radiobtn = chrome.find_element_by_xpath('/html/body/div[3]/div/div[2]/div/div/div[2]/div[2]/form/div[2]/div/div/table/tbody/tr[6]/td[5]/input')
+        radiobtn.click()
+        chrome.find_element_by_class_name('order_btn').click()
+
+        chrome.find_element_by_xpath('/html/body/div[3]/div/div[2]/div/div/div[3]/form/input[1]').click()
+
+        GetPrice = chrome.find_element_by_xpath('/html/body/div[3]/div/div[2]/div/div/div[2]/div/div/table/tbody/tr[4]/td[3]')
+        print(GetPrice)
+
+
+        for r in GetPrice:
+            UpdatePrice = r.text.strip(" \円")
+            print(UpdatePrice)
+
+            creds = None
+            creds = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+
+            # The ID of a spreadsheet.
+            SAMPLE_SPREADSHEET_ID = '1taXktSkHSN3THYRP6m4wNeaP7vLrazemh132P_xLhDo'
+            service = build('sheets', 'v4', credentials=creds)
+
+            # Call the Sheets API
+            sheet = service.spreadsheets()
+
+            # result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
+            #                             range="10款1day格價!A1:BC39").execute()
+            # get googlesheet cell value
+            # values = result.get('values', [])
+            print(CellList[x])
+            sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range="10款1day格價!" + CellList[x],
+                                  valueInputOption="USER_ENTERED", body={"values": [[UpdatePrice]]}).execute()
+            # time.sleep(3)
+        time.sleep(1)
+        chrome.find_element_by_xpath('/html/body/div[1]/div[1]/div/ul/li[5]/a').click()
+        time.sleep(1)
+        chrome.find_element_by_xpath(
+            '/html/body/div[3]/div/div[2]/div/div/div[2]/div[1]/div/table/tbody/tr[2]/td[5]/a').click()
+
+
 if __name__ == '__main__':
 
     # WEBSITE: LENSMODE
@@ -434,13 +533,13 @@ if __name__ == '__main__':
     options.add_argument("--start-maximized")
 
     chrome: WebDriver = webdriver.Chrome('./chromedriver', options=options)
-    #
+
     # chrome.get("https://www.lensmode.com/auth/login/redirectUrl/%252Fmypage%252Findex%252F/")
     #
     # chrome.find_element_by_xpath("/html/body/div[3]/div[2]/div[1]/article/form[1]/table/tbody/tr[2]/td[2]/input[1]").send_keys('lensmamajp@gmail.com')
     # chrome.find_element_by_xpath("/html/body/div[3]/div[2]/div[1]/article/form[1]/table/tbody/tr[3]/td[2]/input").send_keys('kk20201201')
     # chrome.find_element_by_xpath('/html/body/div[3]/div[2]/div[1]/article/form[1]/table/tbody/tr[4]/td/input[2]').click()
-    #
+
     # # Dailies Total 1
     # counter = [1, 2, 4, 6, 8]
     # Url = "https://www.lensmode.com/goods/index/gc/C1T/"
@@ -572,106 +671,131 @@ if __name__ == '__main__':
     # PowerOnlyContactlens(counter, Url, CellList)
     # """
 
-    #WEBSITE: Lens-labo
+    # #WEBSITE: Lens-labo
+    #
+    # chrome.get("https://www.lens-labo.com/login")
+    #
+    # chrome.find_element_by_xpath(
+    #     "/html/body/div[1]/div[1]/article/div[2]/div/form/div/section[1]/table/tbody/tr[1]/td[2]/input").send_keys(
+    #     'lensmamajp@gmail.com')
+    # chrome.find_element_by_xpath(
+    #     "/html/body/div[1]/div[1]/article/div[2]/div/form/div/section[1]/table/tbody/tr[2]/td[2]/input").send_keys('kk20201201')
+    # chrome.find_element_by_xpath(
+    #     '/html/body/div[1]/div[1]/article/div[2]/div/form/div/section[1]/p[2]/input').click()
+    #
+    # # 1 Day Acuvue Define RC
+    # counter = [1, 2, 4, 6, 8]
+    # Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0005-1", "https://www.lens-labo.com/item/detail?itemcd=L0005-2", "",
+    #        "https://www.lens-labo.com/item/detail?itemcd=L0005-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0005-6", "",
+    #        "https://www.lens-labo.com/item/detail?itemcd=L0005-8"]
+    # CellList = ["", "Z7", "AA7", "", "AB7", "", "AC7", "", "AD7"]
+    # PowerBCColorContactlens(counter, Url, CellList)
+    #
+    # # Dailies Total 1
+    # counter = [1, 2, 4, 6, 8]
+    # Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0039-1", "https://www.lens-labo.com/item/detail?itemcd=L0039-2", "",
+    #        "https://www.lens-labo.com/item/detail?itemcd=L0039-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0039-6",
+    #        "", "https://www.lens-labo.com/item/detail?itemcd=L0039-8"]
+    # CellList = ["","C7","D7","","E7","","F7","","G7"]
+    # LaboPowerBCContactlens(counter, Url, CellList)
+    #
+    # # 1 Day Acuvue Moist
+    # counter = [1, 2, 4, 6, 8]
+    # Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0001-1", "https://www.lens-labo.com/item/detail?itemcd=L0001-2", "",
+    #        "https://www.lens-labo.com/item/detail?itemcd=L0001-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0001-6",
+    #        "", "https://www.lens-labo.com/item/detail?itemcd=L0001-8"]
+    # CellList = ["", "R7", "S7", "", "T7", "", "U7", "", "V7"]
+    # LaboPowerBCQtyContactlens(counter, Url, CellList)
+    #
+    # # 1 Day Acuvue Moist 90 PACK
+    # counter = [1, 2, 4]
+    # Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0120-1", "https://www.lens-labo.com/item/detail?itemcd=L0120-2", "", "https://www.lens-labo.com/item/detail?itemcd=L0120-4"]
+    # CellList = ["", "W7", "X7", "", "Y7"]
+    # LaboPowerBCQtyContactlens(counter, Url, CellList)
+    # #
+    # # 1 Day Acuvue Trueye
+    # counter = [1, 2, 4, 6, 8]
+    # Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0002-1", "https://www.lens-labo.com/item/detail?itemcd=L0002-2", "",
+    #        "https://www.lens-labo.com/item/detail?itemcd=L0002-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0002-6",
+    #        "", "https://www.lens-labo.com/item/detail?itemcd=L0002-8"]
+    # CellList = ["", "M7", "N7", "", "O7", "", "P7", "", "Q7"]
+    # LaboPowerBCQtyContactlens(counter, Url, CellList)
+    # #
+    # # 1 Day Acuvue Oasys
+    # counter = [1, 2, 4, 6, 8]
+    # Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0004-1", "https://www.lens-labo.com/item/detail?itemcd=L0004-2", "",
+    #        "https://www.lens-labo.com/item/detail?itemcd=L0004-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0004-6",
+    #        "", "https://www.lens-labo.com/item/detail?itemcd=L0004-8"]
+    # CellList = ["", "H7", "I7", "", "J7", "", "K7", "", "L7"]
+    # LaboPowerBCQtyContactlens(counter, Url, CellList)
+    #
+    # # Myday 無出售
+    #
+    # counter = [1, 2, 4, 6, 8]
+    # Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0014-1", "https://www.lens-labo.com/item/detail?itemcd=L0014-2", "",
+    #        "https://www.lens-labo.com/item/detail?itemcd=L0014-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0014-6",
+    #        "", "https://www.lens-labo.com/item/detail?itemcd=L0014-8"]
+    # CellList = ["", "AE7", "AF7", "", "AG7", "", "AH7", "", "AI7"]
+    # LaboPowerBCQtyContactlens(counter, Url, CellList)
+    #
+    #
+    # # Proclear 1 Day
+    #
+    # counter = [1, 2, 4, 6, 8]
+    # Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0012-1", "https://www.lens-labo.com/item/detail?itemcd=L0012-2", "",
+    #        "https://www.lens-labo.com/item/detail?itemcd=L0012-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0012-6",
+    #        "", "https://www.lens-labo.com/item/detail?itemcd=L0012-8"]
+    # CellList = ["", "AJ7", "AK7", "", "AL7", "", "AM7", "", "AN7"]
+    # LaboPowerBCQtyContactlens(counter, Url, CellList)
+    #
+    # # 1 Day Biotrue
+    # counter = [1, 2, 4, 6, 8]
+    # Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0024-1", "https://www.lens-labo.com/item/detail?itemcd=L0024-2", "",
+    #        "https://www.lens-labo.com/item/detail?itemcd=L0024-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0024-6",
+    #        "", "https://www.lens-labo.com/item/detail?itemcd=L0024-8"]
+    # CellList = ["", "AY7", "AZ7", "", "BA7", "", "BB7", "", "BC7"]
+    # LaboPowerBCQtyContactlens(counter, Url, CellList)
+    #
+    # # Medalist 1 day plus
+    # counter = [1, 2, 4, 6, 8]
+    # Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0003-1", "https://www.lens-labo.com/item/detail?itemcd=L0003-2", "",
+    #        "https://www.lens-labo.com/item/detail?itemcd=L0003-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0003-6",
+    #        "", "https://www.lens-labo.com/item/detail?itemcd=L0003-8"]
+    # CellList = ["", "AT7", "AU7", "", "AV7", "", "AW7", "", "AX7"]
+    # LaboPowerBCQtyContactlens(counter, Url, CellList)
+    #
+    # # Biomedics 1 Day
+    # counter = [1, 2, 4, 6, 8]
+    # Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0013-1", "https://www.lens-labo.com/item/detail?itemcd=L0013-2", "",
+    #        "https://www.lens-labo.com/item/detail?itemcd=L0013-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0013-6",
+    #        "", "https://www.lens-labo.com/item/detail?itemcd=L0013-8"]
+    # CellList = ["", "AO7", "AP7", "", "AQ7", "", "AR7", "", "AS7"]
+    # LaboPowerBCQtyContactlens(counter, Url, CellList)
 
-    chrome.get("https://www.lens-labo.com/login")
+    # Bestlens
+    chrome.get("https://www.bestlens.jp/auth/login/redirectUrl/%252Fmypage%252Findex%252F/")
 
-    chrome.find_element_by_xpath(
-        "/html/body/div[1]/div[1]/article/div[2]/div/form/div/section[1]/table/tbody/tr[1]/td[2]/input").send_keys(
+    chrome.find_element_by_name(
+        'userId').send_keys(
         'lensmamajp@gmail.com')
-    chrome.find_element_by_xpath(
-        "/html/body/div[1]/div[1]/article/div[2]/div/form/div/section[1]/table/tbody/tr[2]/td[2]/input").send_keys('kk20201201')
-    chrome.find_element_by_xpath(
-        '/html/body/div[1]/div[1]/article/div[2]/div/form/div/section[1]/p[2]/input').click()
+    chrome.find_element_by_name(
+        'passwd').send_keys(
+        'kk20201201')
+    chrome.find_element_by_name(
+        'submit').click()
 
     # 1 Day Acuvue Define RC
     counter = [1, 2, 4, 6, 8]
-    Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0005-1", "https://www.lens-labo.com/item/detail?itemcd=L0005-2", "",
-           "https://www.lens-labo.com/item/detail?itemcd=L0005-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0005-6", "",
-           "https://www.lens-labo.com/item/detail?itemcd=L0005-8"]
-    CellList = ["", "Z7", "AA7", "", "AB7", "", "AC7", "", "AD7"]
-    PowerBCColorContactlens(counter, Url, CellList)
+    Url = ["", "https://www.bestlens.jp/goods/index/gc/J1MC/", "https://www.bestlens.jp/goods/index/gc/J1MC!2/", "",
+           "https://www.bestlens.jp/goods/index/gc/J1MC!4/", "", "https://www.bestlens.jp/goods/index/gc/J1MC!6/", "",
+           "https://www.bestlens.jp/goods/index/gc/J1MC!8/"]
+    CellList = ["", "Z9", "AA9", "", "AB9", "", "AC9", "", "AD9"]
+    BestLensPowerBcQtyContactlens(counter, Url, CellList)
 
     # Dailies Total 1
     counter = [1, 2, 4, 6, 8]
-    Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0039-1", "https://www.lens-labo.com/item/detail?itemcd=L0039-2", "",
-           "https://www.lens-labo.com/item/detail?itemcd=L0039-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0039-6",
-           "", "https://www.lens-labo.com/item/detail?itemcd=L0039-8"]
-    CellList = ["","C7","D7","","E7","","F7","","G7"]
-    LaboPowerBCContactlens(counter, Url, CellList)
-
-    # 1 Day Acuvue Moist
-    counter = [1, 2, 4, 6, 8]
-    Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0001-1", "https://www.lens-labo.com/item/detail?itemcd=L0001-2", "",
-           "https://www.lens-labo.com/item/detail?itemcd=L0001-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0001-6",
-           "", "https://www.lens-labo.com/item/detail?itemcd=L0001-8"]
-    CellList = ["", "R7", "S7", "", "T7", "", "U7", "", "V7"]
-    LaboPowerBCQtyContactlens(counter, Url, CellList)
-
-    # 1 Day Acuvue Moist 90 PACK
-    counter = [1, 2, 4]
-    Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0120-1", "https://www.lens-labo.com/item/detail?itemcd=L0120-2", "", "https://www.lens-labo.com/item/detail?itemcd=L0120-4"]
-    CellList = ["", "W7", "X7", "", "Y7"]
-    LaboPowerBCQtyContactlens(counter, Url, CellList)
-    #
-    # 1 Day Acuvue Trueye
-    counter = [1, 2, 4, 6, 8]
-    Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0002-1", "https://www.lens-labo.com/item/detail?itemcd=L0002-2", "",
-           "https://www.lens-labo.com/item/detail?itemcd=L0002-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0002-6",
-           "", "https://www.lens-labo.com/item/detail?itemcd=L0002-8"]
-    CellList = ["", "M7", "N7", "", "O7", "", "P7", "", "Q7"]
-    LaboPowerBCQtyContactlens(counter, Url, CellList)
-    #
-    # 1 Day Acuvue Oasys
-    counter = [1, 2, 4, 6, 8]
-    Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0004-1", "https://www.lens-labo.com/item/detail?itemcd=L0004-2", "",
-           "https://www.lens-labo.com/item/detail?itemcd=L0004-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0004-6",
-           "", "https://www.lens-labo.com/item/detail?itemcd=L0004-8"]
-    CellList = ["", "H7", "I7", "", "J7", "", "K7", "", "L7"]
-    LaboPowerBCQtyContactlens(counter, Url, CellList)
-
-    # Myday 無出售
-
-    counter = [1, 2, 4, 6, 8]
-    Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0014-1", "https://www.lens-labo.com/item/detail?itemcd=L0014-2", "",
-           "https://www.lens-labo.com/item/detail?itemcd=L0014-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0014-6",
-           "", "https://www.lens-labo.com/item/detail?itemcd=L0014-8"]
-    CellList = ["", "AE7", "AF7", "", "AG7", "", "AH7", "", "AI7"]
-    LaboPowerBCQtyContactlens(counter, Url, CellList)
-
-
-    # Proclear 1 Day
-
-    counter = [1, 2, 4, 6, 8]
-    Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0012-1", "https://www.lens-labo.com/item/detail?itemcd=L0012-2", "",
-           "https://www.lens-labo.com/item/detail?itemcd=L0012-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0012-6",
-           "", "https://www.lens-labo.com/item/detail?itemcd=L0012-8"]
-    CellList = ["", "AJ7", "AK7", "", "AL7", "", "AM7", "", "AN7"]
-    LaboPowerBCQtyContactlens(counter, Url, CellList)
-
-    # 1 Day Biotrue
-    counter = [1, 2, 4, 6, 8]
-    Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0024-1", "https://www.lens-labo.com/item/detail?itemcd=L0024-2", "",
-           "https://www.lens-labo.com/item/detail?itemcd=L0024-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0024-6",
-           "", "https://www.lens-labo.com/item/detail?itemcd=L0024-8"]
-    CellList = ["", "AY7", "AZ7", "", "BA7", "", "BB7", "", "BC7"]
-    LaboPowerBCQtyContactlens(counter, Url, CellList)
-
-    # Medalist 1 day plus
-    counter = [1, 2, 4, 6, 8]
-    Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0003-1", "https://www.lens-labo.com/item/detail?itemcd=L0003-2", "",
-           "https://www.lens-labo.com/item/detail?itemcd=L0003-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0003-6",
-           "", "https://www.lens-labo.com/item/detail?itemcd=L0003-8"]
-    CellList = ["", "AT7", "AU7", "", "AV7", "", "AW7", "", "AX7"]
-    LaboPowerBCQtyContactlens(counter, Url, CellList)
-
-    # Biomedics 1 Day
-    counter = [1, 2, 4, 6, 8]
-    Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0013-1", "https://www.lens-labo.com/item/detail?itemcd=L0013-2", "",
-           "https://www.lens-labo.com/item/detail?itemcd=L0013-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0013-6",
-           "", "https://www.lens-labo.com/item/detail?itemcd=L0013-8"]
-    CellList = ["", "AO7", "AP7", "", "AQ7", "", "AR7", "", "AS7"]
-    LaboPowerBCQtyContactlens(counter, Url, CellList)
-
-
-
+    Url = ["", "https://www.bestlens.jp/goods/index/gc/C1T/", "https://www.bestlens.jp/goods/index/gc/C1T!2/", "",
+           "https://www.bestlens.jp/goods/index/gc/C1T!4/", "", "https://www.bestlens.jp/goods/index/gc/C1T!6/",
+           "", "https://www.bestlens.jp/goods/index/gc/C1T!8/"]
+    CellList = ["","C9","D9","","E9","","F9","","G9"]
+    BestLensPowerBcQtyContactlens(counter, Url, CellList)
