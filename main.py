@@ -1,7 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import time
-
+import os
+import selenium.webdriver.support.ui as ui
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support import expected_conditions as EC
@@ -40,7 +41,16 @@ def PowerOnlyContactlens(counter, Url, CellList):
 
         chrome.find_element_by_xpath('/html/body/div[3]/div[2]/article/form/div[2]/ul/li[2]/input[3]').click()
 
+        wait = ui.WebDriverWait(chrome,10)
+        wait.until(lambda driver: chrome.find_element_by_xpath("/html/body/div[3]/div[2]/article/article/form/span/input[1]"))
         chrome.find_element_by_xpath('/html/body/div[3]/div[2]/article/article/form/span/input[1]').click()
+
+        # try:
+        #     chrome.find_element_by_xpath('/html/body/div[3]/div[2]/article/article/form/span/input[1]').click()
+        # except:
+        #     CSS_SELECTOR = '.order_btn'
+        #     close = chrome.find_element_by_css_selector(CSS_SELECTOR)
+        #     close.click()
 
         GetPrice = chrome.find_elements_by_xpath("/html/body/div[3]/div[2]/article[1]/div[1]/table/tbody/tr[6]/td[3]")
 
@@ -99,9 +109,18 @@ def PowerBCContactlens(counter, Url, CellList):
             time.sleep(1)
             chrome.find_element_by_xpath('/html/body/div[3]/div[2]/article/form/table[3]/tbody/tr[2]/td[5]/input').click()
 
+        # wait = ui.WebDriverWait(chrome,10)
+        # wait.until(lambda driver: chrome.find_element_by_xpath("/html/body/div[3]/div[2]/article/form/div[2]/ul/li[2]/input[3]"))
+        # chrome.find_element_by_xpath('/html/body/div[3]/div[2]/article/form/div[2]/ul/li[2]/input[3]').click()
+
+        wait = ui.WebDriverWait(chrome,10)
+        wait.until(lambda driver: chrome.find_element_by_xpath("/html/body/div[3]/div[2]/article/form/div[2]/ul/li[2]/input[3]"))
         chrome.find_element_by_xpath('/html/body/div[3]/div[2]/article/form/div[2]/ul/li[2]/input[3]').click()
 
+        wait = ui.WebDriverWait(chrome,10)
+        wait.until(lambda driver: chrome.find_element_by_xpath("/html/body/div[3]/div[2]/article/article/form/span/input[1]"))
         chrome.find_element_by_xpath('/html/body/div[3]/div[2]/article/article/form/span/input[1]').click()
+
 
         #time.sleep(3)
         GetPrice = chrome.find_elements_by_xpath("/html/body/div[3]/div[2]/article[1]/div[1]/table/tbody/tr[6]/td[3]")
@@ -173,14 +192,18 @@ def PowerBCColorContactlens(counter, Url, CellList):
             chrome.find_element_by_id('cartbtn').click()
 
         #time.sleep(1)
+
         chrome.find_element_by_xpath('/html/body/div[1]/div[1]/article/section[2]/section/form[2]/p/input').click()
         #time.sleep(1)
+        #/html/body/div[1]/div/article/section[2]/section/form[2]/div/table[3]/tbody/tr[3]/td/div/ins
         radiobtn = chrome.find_element_by_xpath('/html/body/div[1]/div/article/section[2]/section/form[2]/div/table[3]/tbody/tr[3]/td/div/ins')
         radiobtn.click()
-      
-        chrome.find_element_by_xpath('/html/body/div[1]/div/article/section[2]/section/form[2]/div/p[5]/input').click()
 
+        wait = ui.WebDriverWait(chrome,5)
+        wait.until(lambda driver: chrome.find_element_by_xpath("/html/body/div[1]/div/article/section[2]/section/form[2]/div/p[5]/input"))
+        chrome.find_element_by_xpath("/html/body/div[1]/div/article/section[2]/section/form[2]/div/p[5]/input").click()
 
+        #/html/body/div[1]/div[1]/article/section[2]/section/table/tfoot/tr/td/table/tbody/tr[4]/td/strong
         GetPrice = chrome.find_elements_by_xpath("/html/body/div[1]/div[1]/article/section[2]/section/table/tfoot/tr/td/table/tbody/tr[4]/td/strong")
         #print(GetPrice)
 
@@ -207,87 +230,8 @@ def PowerBCColorContactlens(counter, Url, CellList):
             print(CellList[x])
             sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range="10款1day格價!" + CellList[x],
                                   valueInputOption="USER_ENTERED", body={"values": [[UpdatePrice]]}).execute()
-
+        #/html/body/div[5]/header/div[2]/nav/ul/li[4]/a
         chrome.get('https://www.lensmode.com/kago/delete/kagoKey/0/')
-
-def LaboPowerBCColorContactlens(counter, Url, CellList):
-
-    for x in counter:
-
-        chrome.get(Url[x])
-        if x == 1:
-            dropdown = Select(chrome.find_element_by_name('selRightEyeBC'))
-            dropdown.select_by_index(1)
-
-            dropdown = Select(chrome.find_element_by_name('selRightEyeColor'))
-            dropdown.select_by_index(4)
-
-            dropdown = Select(chrome.find_element_by_id('selRightEyePWR'))
-            dropdown.select_by_index(2)
-            chrome.find_element_by_name('txtAmount').clear()
-            chrome.find_element_by_name('txtAmount').send_keys(x)
-
-            chrome.find_element_by_id('cartbtn').click()
-        elif x > 1:
-            dropdown = Select(chrome.find_element_by_name('selRightEyeBC'))
-            dropdown.select_by_index(1)
-
-            dropdown = Select(chrome.find_element_by_name('selRightEyeColor'))
-            dropdown.select_by_index(4)
-
-            dropdown = Select(chrome.find_element_by_id('selRightEyePWR'))
-            dropdown.select_by_index(2)
-
-            dropdown = Select(chrome.find_element_by_name('selLeftEyeBC'))
-            dropdown.select_by_index(1)
-
-            dropdown = Select(chrome.find_element_by_name('selLeftEyeColor'))
-            dropdown.select_by_index(4)
-
-            dropdown = Select(chrome.find_element_by_id('selLeftEyePWR'))
-            dropdown.select_by_index(2)
-
-            chrome.find_element_by_id('cartbtn').click()
-
-        #time.sleep(1)
-
-        chrome.find_element_by_xpath('/html/body/div[1]/div[1]/article/section[2]/section/form[2]/p/input').click()
-        #time.sleep(1)
-        radiobtn = chrome.find_element_by_xpath('/html/body/div[1]/div/article/section[2]/section/form[2]/div/table[3]/tbody/tr[3]/td/div/ins')
-        radiobtn.click()
-
-        chrome.find_element_by_xpath('//*[@id="idOrderPerson"]/p[5]/input').click()
-
-        GetPrice = chrome.find_elements_by_xpath("/html/body/div[1]/div[1]/article/section[2]/section/table/tfoot/tr/td/table/tbody/tr[4]/td/strong")
-        #print(GetPrice)
-
-        for r in GetPrice:
-            UpdatePrice = r.text.strip(" \円")
-            print(UpdatePrice)
-
-            # CellList = ["", "R3", "S3", "", "T3", "", "U3", "", "V3"]
-
-            creds = None
-            creds = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
-
-            # The ID of a spreadsheet.
-            SAMPLE_SPREADSHEET_ID = '1taXktSkHSN3THYRP6m4wNeaP7vLrazemh132P_xLhDo'
-            service = build('sheets', 'v4', credentials=creds)
-
-            # Call the Sheets API
-            sheet = service.spreadsheets()
-
-            # result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
-            #                             range="10款1day格價!A1:BC39").execute()
-            # get googlesheet cell value
-            # values = result.get('values', [])
-            print(CellList[x])
-            sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range="10款1day格價!" + CellList[x],
-                                  valueInputOption="USER_ENTERED", body={"values": [[UpdatePrice]]}).execute()
-
-        chrome.find_element_by_xpath('/html/body/div[1]/header/div[2]/nav/ul/li[4]/a').click()
-        chrome.find_element_by_name('btnDelete').click()
-
 
 def LaboPowerBCContactlens(counter, Url, CellList):
 
@@ -303,6 +247,7 @@ def LaboPowerBCContactlens(counter, Url, CellList):
 
             chrome.find_element_by_id('cartbtn').click()
         elif x > 1:
+            time.sleep(1)
             dropdown = Select(chrome.find_element_by_xpath('/html/body/div[1]/div[1]/form/article/section/section[1]/div[1]/div[2]/div[2]/div[1]/table/tbody/tr[2]/td/select'))
             dropdown.select_by_index(1)
 
@@ -319,14 +264,19 @@ def LaboPowerBCContactlens(counter, Url, CellList):
 
             chrome.find_element_by_id('cartbtn').click()
 
-        # time.sleep(1)
+        time.sleep(1)
         chrome.find_element_by_xpath('/html/body/div[1]/div[1]/article/section[2]/section/form[2]/p/input').click()
-        # time.sleep(1)
-        radiobtn = chrome.find_element_by_xpath(
-            '/html/body/div[1]/div/article/section[2]/section/form[2]/div/table[3]/tbody/tr[3]/td/div/ins')
+        time.sleep(1)
+        wait = ui.WebDriverWait(chrome,5)
+        wait.until(lambda driver: chrome.find_element_by_xpath("/html/body/div[1]/div/article/section[2]/section/form[2]/div/table[3]/tbody/tr[3]/td/div/ins"))
+        radiobtn = chrome.find_element_by_xpath('/html/body/div[1]/div/article/section[2]/section/form[2]/div/table[3]/tbody/tr[3]/td/div/ins')
         radiobtn.click()
-        # /html/body/div[1]/div/article/section[2]/section/form[2]/div/p[5]/input
-        chrome.find_element_by_xpath('//*[@id="idOrderPerson"]/p[5]/input').click()
+
+        wait = ui.WebDriverWait(chrome,5)
+        wait.until(lambda driver: chrome.find_element_by_xpath("/html/body/div[1]/div/article/section[2]/section/form[2]/div/p[5]/input"))
+        chrome.find_element_by_xpath("/html/body/div[1]/div/article/section[2]/section/form[2]/div/p[5]/input").click()
+        #/html/body/div[1]/div/article/section[2]/section/form[2]/div/p[5]/input
+        #chrome.find_element_by_xpath("/html/body/div[1]/div/article/section[2]/section/form[2]/div/p[3]/input").click()
 
 
         GetPrice = chrome.find_elements_by_xpath("/html/body/div[1]/div[1]/article/section[2]/section/table/tfoot/tr/td/table/tbody/tr[4]/td/strong")
@@ -357,102 +307,108 @@ def LaboPowerBCContactlens(counter, Url, CellList):
                                   valueInputOption="USER_ENTERED", body={"values": [[UpdatePrice]]}).execute()
 
 
-        chrome.find_element_by_xpath('/html/body/div[1]/header/div[2]/nav/ul/li[4]/a').click()
+        chrome.get('https://www.lens-labo.com/cart/main')
 
-        chrome.find_element_by_name('btnDelete').click()
-
+        wait = ui.WebDriverWait(chrome, 5)
+        wait.until(lambda driver: chrome.find_element_by_xpath(
+            "/html/body/div[1]/div[1]/article/section[2]/section/form[1]/table/tbody/tr/td[5]/div/p/input"))
+        chrome.find_element_by_xpath('/html/body/div[1]/div[1]/article/section[2]/section/form[1]/table/tbody/tr/td[5]/div/p/input').click()
 
 
 def LaboPowerBCQtyContactlens(counter, Url, CellList):
 
     for x in counter:
 
-        chrome.get(Url[x])
-        time.sleep(1)
+        try:
+            chrome.get(Url[x])
+            time.sleep(1)
 
-        if x == 1:
-            dropdown = Select(chrome.find_element_by_name('selRightEyeBC'))
-            dropdown.select_by_index(1)
+            if x == 1:
+                dropdown = Select(chrome.find_element_by_name('selRightEyeBC'))
+                dropdown.select_by_index(1)
 
-            dropdown = Select(chrome.find_element_by_name('selRightEyePWR'))
-            dropdown.select_by_index(1)
-            try:
+                wait = ui.WebDriverWait(chrome, 5)
+                wait.until(lambda driver: chrome.find_element_by_name('selRightEyePWR'))
+                dropdown1 = Select(chrome.find_element_by_name('selRightEyePWR'))
+                dropdown1.select_by_index(1)
 
-                chrome.find_element_by_xpath('//*[@id="txtAmount"]').clear()
-                chrome.find_element_by_xpath('txtAmount').send_keys("1")
-            except:
                 try:
-                    chrome.find_element_by_xpath('//*[@id="spsVarpriceBox"]/div/table/tbody/tr[3]/td/input').clear()
-                    chrome.find_element_by_xpath('//*[@id="spsVarpriceBox"]/div/table/tbody/tr[3]/td/input').send_keys("1")
+                    wait = ui.WebDriverWait(chrome, 5)
+                    wait.until(lambda driver: chrome.find_element_by_name('txtAmount'))
+                    chrome.find_element_by_name('txtAmount').clear()
+                    chrome.find_element_by_name('txtAmount').send_keys("1")
                 except:
-                    dropdown = Select(chrome.find_element_by_id('txtAmount'))
-                    dropdown.select_by_index(1)
+                    time.sleep(1)
+                    dropdown2 = Select(chrome.find_element_by_id('txtAmount'))
+                    dropdown2.select_by_index(1)
 
-            chrome.find_element_by_id('cartbtn').click()
 
-        elif x > 1:
-            dropdown = Select(chrome.find_element_by_name('selRightEyeBC'))
-            dropdown.select_by_index(1)
+                chrome.find_element_by_id('cartbtn').click()
 
-            try:
-                dropdown = Select(chrome.find_element_by_name('selRightEyePWR'))
-                dropdown.select_by_index(1)
-            except:
-                dropdown = Select(chrome.find_element_by_name('selRightEyePWR'))
+            elif x > 1:
+                time.sleep(1)
+                dropdown = Select(chrome.find_element_by_name('selRightEyeBC'))
                 dropdown.select_by_index(1)
 
+                dropdown1 = Select(chrome.find_element_by_name('selRightEyePWR'))
+                dropdown1.select_by_index(1)
 
-            dropdown = Select(chrome.find_element_by_name('selLeftEyeBC'))
-            dropdown.select_by_index(1)
+                dropdown2 = Select(chrome.find_element_by_name('selLeftEyeBC'))
+                dropdown2.select_by_index(1)
 
-            try:
-                dropdown = Select(chrome.find_element_by_name('selLeftEyePWR'))
-                dropdown.select_by_index(1)
-            except:
-                dropdown = Select(chrome.find_element_by_name('selLeftEyePWR'))
-                dropdown.select_by_index(1)
+                dropdown3 = Select(chrome.find_element_by_name('selLeftEyePWR'))
+                dropdown3.select_by_index(1)
 
+                chrome.find_element_by_id('cartbtn').click()
 
-            chrome.find_element_by_id('cartbtn').click()
+            time.sleep(1)
+            chrome.find_element_by_xpath('/html/body/div[1]/div[1]/article/section[2]/section/form[2]/p/input').click()
+            time.sleep(1)
 
+            radiobtn = chrome.find_element_by_xpath(
+                '/html/body/div[1]/div/article/section[2]/section/form[2]/div/table[3]/tbody/tr[3]/td/div/ins')
+            radiobtn.click()
 
-        chrome.find_element_by_xpath('/html/body/div[1]/div[1]/article/section[2]/section/form[2]/p/input').click()
+            wait = ui.WebDriverWait(chrome, 5)
+            wait.until(lambda driver: chrome.find_element_by_xpath("/html/body/div[1]/div/article/section[2]/section/form[2]/div/p[5]/input"))
+            chrome.find_element_by_xpath("/html/body/div[1]/div/article/section[2]/section/form[2]/div/p[5]/input").click()
 
+            GetPrice = chrome.find_elements_by_xpath(
+                "/html/body/div[1]/div[1]/article/section[2]/section/table/tfoot/tr/td/table/tbody/tr[4]/td/strong")
+            # print(GetPrice)
 
-        radiobtn = chrome.find_element_by_xpath(
-            '/html/body/div[1]/div/article/section[2]/section/form[2]/div/table[3]/tbody/tr[3]/td/div/ins')
-        radiobtn.click()
-        chrome.find_element_by_xpath('//*[@id="idOrderPerson"]/p[5]/input').click()
+            for r in GetPrice:
+                UpdatePrice = r.text.strip(" \円")
+                print(UpdatePrice)
 
-        GetPrice = chrome.find_elements_by_xpath(
-            "/html/body/div[1]/div[1]/article/section[2]/section/table/tfoot/tr/td/table/tbody/tr[4]/td/strong")
-        # print(GetPrice)
+                creds = None
+                creds = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
 
-        for r in GetPrice:
-            UpdatePrice = r.text.strip(" \円")
-            print(UpdatePrice)
+                # The ID of a spreadsheet.
+                SAMPLE_SPREADSHEET_ID = '1taXktSkHSN3THYRP6m4wNeaP7vLrazemh132P_xLhDo'
+                service = build('sheets', 'v4', credentials=creds)
 
-            creds = None
-            creds = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+                # Call the Sheets API
+                sheet = service.spreadsheets()
 
-            # The ID of a spreadsheet.
-            SAMPLE_SPREADSHEET_ID = '1taXktSkHSN3THYRP6m4wNeaP7vLrazemh132P_xLhDo'
-            service = build('sheets', 'v4', credentials=creds)
+                # result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
+                #                             range="10款1day格價!A1:BC39").execute()
+                # get googlesheet cell value
+                # values = result.get('values', [])
+                print(CellList[x])
+                sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range="10款1day格價!" + CellList[x],
+                                      valueInputOption="USER_ENTERED", body={"values": [[UpdatePrice]]}).execute()
 
-            # Call the Sheets API
-            sheet = service.spreadsheets()
+            chrome.get('https://www.lens-labo.com/cart/main')
 
-            # result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
-            #                             range="10款1day格價!A1:BC39").execute()
-            # get googlesheet cell value
-            # values = result.get('values', [])
-            print(CellList[x])
-            sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range="10款1day格價!" + CellList[x],
-                                  valueInputOption="USER_ENTERED", body={"values": [[UpdatePrice]]}).execute()
+            wait = ui.WebDriverWait(chrome, 5)
+            wait.until(lambda driver: chrome.find_element_by_xpath(
+                "/html/body/div[1]/div[1]/article/section[2]/section/form[1]/table/tbody/tr/td[5]/div/p/input"))
 
-        chrome.find_element_by_xpath('/html/body/div[1]/header/div[2]/nav/ul/li[4]/a').click()
-
-        chrome.find_element_by_name('btnDelete').click()
+            chrome.find_element_by_xpath(
+                '/html/body/div[1]/div[1]/article/section[2]/section/form[1]/table/tbody/tr/td[5]/div/p/input').click()
+        except:
+            pass
 
 
 def BestLensPowerQtyContactlens(counter, Url, CellList):
@@ -546,9 +502,11 @@ def BestLensPowerQtyContactlens(counter, Url, CellList):
             sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range="10款1day格價!" + CellList[x],
                                   valueInputOption="USER_ENTERED", body={"values": [[UpdatePrice]]}).execute()
 
-        chrome.find_element_by_xpath('/html/body/div[1]/header/div[2]/nav/ul/li[4]/a').click()
-
-        chrome.find_element_by_name('btnDelete').click()
+        time.sleep(1)
+        chrome.find_element_by_xpath('/html/body/div[1]/div[1]/div/ul/li[5]/a').click()
+        time.sleep(1)
+        chrome.find_element_by_xpath(
+            '/html/body/div[3]/div/div[2]/div/div/div[2]/div[1]/div/table/tbody/tr[2]/td[5]/a').click()
 
 
 def BestLensPowerBcQtyContactlens(counter, Url, CellList):
@@ -687,112 +645,53 @@ def LensApplePowerBcQtyContactlens(counter, Url, CellList):
 
         if x == 1:
 
-            try:
-                dropdown = Select(chrome.find_element_by_id('BCDIA'))
-                dropdown.select_by_index(1)
-            except:
-                time.sleep(1)
-                dropdown = Select(chrome.find_element_by_id('BCDIA'))
-                dropdown.select_by_index(1)
-            else:
-                pass
+            time.sleep(1)
+            dropdown = Select(chrome.find_element_by_id('BCDIA'))
+            dropdown.select_by_index(1)
 
-            try:
-                dropdown = Select(chrome.find_element_by_id('PWR'))
-                dropdown.select_by_index(1)
-            except:
-                time.sleep(1)
-                dropdown = Select(chrome.find_element_by_id('PWR'))
-                dropdown.select_by_index(1)
-            else:
-                pass
+            dropdown = Select(chrome.find_element_by_id('PWR'))
+            dropdown.select_by_index(1)
 
-            try:
-                dropdown = Select(chrome.find_element_by_name('NUM'))
-                dropdown.select_by_index(1)
-            except:
-                time.sleep(1)
-                dropdown = Select(chrome.find_element_by_name('NUM'))
-                dropdown.select_by_index(1)
-
-            else:
-                pass
-
+            dropdown = Select(chrome.find_element_by_name('NUM'))
+            dropdown.select_by_index(1)
 
 
         elif x > 1:
 
-            try:
-                dropdown = Select(chrome.find_element_by_id('BCDIA'))
-                dropdown.select_by_index(1)
-            except:
-                time.sleep(1)
-                dropdown = Select(chrome.find_element_by_id('BCDIA'))
-                dropdown.select_by_index(1)
-            else:
-                pass
+            time.sleep(1)
+            dropdown = Select(chrome.find_element_by_id('BCDIA'))
+            dropdown.select_by_index(1)
 
-            try:
-                dropdown = Select(chrome.find_element_by_id('PWR'))
-                dropdown.select_by_index(1)
-            except:
-                time.sleep(1)
-                dropdown = Select(chrome.find_element_by_id('PWR'))
-                dropdown.select_by_index(1)
-            else:
-                pass
+            dropdown = Select(chrome.find_element_by_id('PWR'))
+            dropdown.select_by_index(1)
 
-            try:
-                dropdown = Select(chrome.find_element_by_id('BCDIA2'))
-                dropdown.select_by_index(1)
-            except:
-                dropdown = Select(chrome.find_element_by_id('BCDIA2'))
-                dropdown.select_by_index(1)
-            else:
-                pass
+            dropdown = Select(chrome.find_element_by_id('BCDIA2'))
+            dropdown.select_by_index(1)
 
-            try:
-                dropdown = Select(chrome.find_element_by_id('PWR2'))
-                dropdown.select_by_index(1)
-            except:
-                dropdown = Select(chrome.find_element_by_id('PWR2'))
-                dropdown.select_by_index(1)
-            else:
-                pass
+            dropdown = Select(chrome.find_element_by_id('PWR2'))
+            dropdown.select_by_index(1)
 
-        chrome.find_element_by_xpath('/html/body/div[2]/table/tbody/tr/td[2]/form/div/div[2]/div[2]/p[12]/input').click()
+
+        wait = ui.WebDriverWait(chrome,5)
+        wait.until(lambda driver: chrome.find_element_by_xpath("/html/body/div[1]/div[2]/main/section[1]/div/div[2]/form/div[2]/button"))
+        chrome.find_element_by_xpath('/html/body/div[1]/div[2]/main/section[1]/div/div[2]/form/div[2]/button').click()
         time.sleep(1)
-        chrome.find_element_by_xpath('/html/body/div[1]/div[4]/table/tbody/tr/td[2]/div/table/tbody/tr[8]/td/table/tbody/tr/td[2]/a').click()
+
+        chrome.get("https://www.lens-apple.jp/order/input/")
         time.sleep(1)
-        radiobtn = chrome.find_element_by_xpath('/html/body/div[1]/table/tbody/tr/td/div/div[1]/form/div[1]/div[2]/ul/li[1]/label')
+        radiobtn = chrome.find_element_by_xpath('/html/body/div[1]/div[2]/main/section/form/section[1]/div/ul/li[5]/div/label')
         radiobtn.click()
-        radiobtn = chrome.find_element_by_xpath('/html/body/div[1]/table/tbody/tr/td/div/div[1]/form/div[4]/button')
-        radiobtn.click()
+        chrome.find_element_by_id('js_order_confirm_btn').click()
 
-        # chrome.find_element_by_xpath('/html/body/div[3]/div/div[2]/div/div/div[3]/form/input[1]').click()
 
-        if x == 1:
-            GetPrice = chrome.find_elements_by_xpath(
-                '/html/body/div[1]/table/tbody/tr/td/div/form/table/tbody/tr[7]/td/table/tbody/tr/td/table[2]/tbody/tr[8]/td[2]/b')
-            print(GetPrice)
-            if not GetPrice:
-                time.sleep(1)
-                GetPrice = chrome.find_elements_by_xpath(
-                    '/html/body/div[1]/table/tbody/tr/td/div/form/table/tbody/tr[7]/td/table/tbody/tr/td/table[2]/tbody/tr[8]/td[2]/b')
-                print("repeat" + GetPrice)
-        elif x > 1:
 
-            GetPrice = chrome.find_elements_by_xpath(
-                '/html/body/div[1]/table/tbody/tr/td/div/form/table/tbody/tr[7]/td/table/tbody/tr/td/table[2]/tbody/tr[8]/td[2]/b')
-            print(GetPrice)
-            if not GetPrice:
-                time.sleep(1)
-                GetPrice = chrome.find_elements_by_xpath(
-                    '/html/body/div[1]/table/tbody/tr/td/div/form/table/tbody/tr[7]/td/table/tbody/tr/td/table[2]/tbody/tr[8]/td[2]/b')
-                print("repeat" + GetPrice)
+        GetPrice = chrome.find_elements_by_xpath(
+            '/html/body/div[1]/div[2]/main/section/form/section[1]/div/div[2]/dl[1]/dd')
+        print(GetPrice)
+
 
         for r in GetPrice:
-            UpdatePrice = r.text.strip(" \円")
+            UpdatePrice = r.text.strip(" \¥")
             print(UpdatePrice)
 
             creds = None
@@ -813,11 +712,11 @@ def LensApplePowerBcQtyContactlens(counter, Url, CellList):
             sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range="10款1day格價!" + CellList[x],
                                   valueInputOption="USER_ENTERED", body={"values": [[UpdatePrice]]}).execute()
 
-        time.sleep(1)
-        chrome.find_element_by_xpath('/html/body/div[1]/div[1]/div[1]/div[3]/ul/li[6]/a/img').click()
-        time.sleep(1)
+
+        chrome.get("https://www.lens-apple.jp/kago/")
+
         chrome.find_element_by_xpath(
-            '/html/body/div[1]/div[4]/table/tbody/tr/td[2]/div/table/tbody/tr[3]/td/table/tbody/tr[4]/td[1]/nobr/a').click()
+            '/html/body/div[1]/div[2]/main/section/div[1]/table/tbody/tr[1]/td[1]/div/div[1]/p/a').click()
 
 def LensApplePowerQtyContactlens(counter, Url, CellList):
     for x in counter:
@@ -826,83 +725,40 @@ def LensApplePowerQtyContactlens(counter, Url, CellList):
 
         if x == 1:
 
-            try:
-                dropdown = Select(chrome.find_element_by_id('PWR'))
-                dropdown.select_by_index(1)
-            except:
-                time.sleep(1)
-                dropdown = Select(chrome.find_element_by_id('PWR'))
-                dropdown.select_by_index(1)
-            else:
-                pass
+            dropdown = Select(chrome.find_element_by_id('PWR'))
+            dropdown.select_by_index(1)
 
-            try:
-                dropdown = Select(chrome.find_element_by_name('NUM'))
-                dropdown.select_by_index(1)
-            except:
-                time.sleep(1)
-                dropdown = Select(chrome.find_element_by_name('NUM'))
-                dropdown.select_by_index(1)
 
-            else:
-                pass
+            dropdown = Select(chrome.find_element_by_name('NUM'))
+            dropdown.select_by_index(1)
+
+
         elif x > 1:
 
-            try:
-                dropdown = Select(chrome.find_element_by_id('PWR'))
-                dropdown.select_by_index(1)
-            except:
-                time.sleep(1)
-                dropdown = Select(chrome.find_element_by_id('PWR'))
-                dropdown.select_by_index(1)
-            else:
-                pass
 
-            try:
-                dropdown = Select(chrome.find_element_by_id('PWR2'))
-                dropdown.select_by_index(1)
-            except:
-                dropdown = Select(chrome.find_element_by_id('PWR2'))
-                dropdown.select_by_index(1)
-            else:
-                pass
+            dropdown = Select(chrome.find_element_by_id('PWR'))
+            dropdown.select_by_index(1)
 
-        chrome.find_element_by_xpath('/html/body/div[2]/table/tbody/tr/td[2]/form/div/div[2]/div[2]/p[12]/input').click()
+            dropdown = Select(chrome.find_element_by_id('PWR2'))
+            dropdown.select_by_index(1)
 
-        chrome.find_element_by_xpath('/html/body/div[1]/div[4]/table/tbody/tr/td[2]/div/table/tbody/tr[8]/td/table/tbody/tr/td[2]/a').click()
         time.sleep(1)
-        radiobtn = chrome.find_element_by_xpath('/html/body/div[1]/table/tbody/tr/td/div/div[1]/form/div[1]/div[2]/ul/li[1]/label')
+        chrome.find_element_by_id('kago_input_btn').click()
+
+        chrome.get('https://www.lens-apple.jp/order/input/')
+        time.sleep(1)
+        radiobtn = chrome.find_element_by_xpath('/html/body/div[1]/div[2]/main/section/form/section[1]/div/ul/li[5]/div/label')
         radiobtn.click()
         chrome.find_element_by_id('js_order_confirm_btn').click()
 
 
         # chrome.find_element_by_xpath('/html/body/div[3]/div/div[2]/div/div/div[3]/form/input[1]').click()
 
-        if x == 1:
-            GetPrice = chrome.find_elements_by_xpath(
-                '/html/body/div[1]/table/tbody/tr/td/div/form/table/tbody/tr[7]/td/table/tbody/tr/td/table[2]/tbody/tr[8]/td[2]/b')
-            print(GetPrice)
-
-            if not GetPrice:
-                time.sleep(1)
-                GetPrice = chrome.find_elements_by_xpath(
-                    '/html/body/div[1]/table/tbody/tr/td/div/form/table/tbody/tr[7]/td/table/tbody/tr/td/table[2]/tbody/tr[8]/td[2]/b')
-                print("repeat" + GetPrice)
-
-        elif x > 1:
-            GetPrice = chrome.find_elements_by_xpath(
-                '/html/body/div[1]/table/tbody/tr/td/div/form/table/tbody/tr[7]/td/table/tbody/tr/td/table[2]/tbody/tr[8]/td[2]/b')
-            print(GetPrice)
-
-            if not GetPrice:
-                time.sleep(1)
-                GetPrice = chrome.find_elements_by_xpath(
-                    '/html/body/div[1]/table/tbody/tr/td/div/form/table/tbody/tr[7]/td/table/tbody/tr/td/table[2]/tbody/tr[8]/td[2]/b')
-                print("repeat" + GetPrice)
+        GetPrice = chrome.find_elements_by_xpath('/html/body/div[1]/div[2]/main/section/form/section[1]/div/div[2]/dl[1]/dd')
 
 
         for r in GetPrice:
-            UpdatePrice = r.text.strip(" \円")
+            UpdatePrice = r.text.strip(" \¥")
             print(UpdatePrice)
 
             creds = None
@@ -923,323 +779,324 @@ def LensApplePowerQtyContactlens(counter, Url, CellList):
             sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range="10款1day格價!" + CellList[x],
                                   valueInputOption="USER_ENTERED", body={"values": [[UpdatePrice]]}).execute()
 
-        time.sleep(1)
-        chrome.find_element_by_xpath('/html/body/div[1]/div[1]/div[1]/div[3]/ul/li[6]/a/img').click()
-        time.sleep(1)
+        chrome.get("https://www.lens-apple.jp/kago/")
+
         chrome.find_element_by_xpath(
-            '/html/body/div[1]/div[4]/table/tbody/tr/td[2]/div/table/tbody/tr[3]/td/table/tbody/tr[4]/td[1]/nobr/a').click()
+            '/html/body/div[1]/div[2]/main/section/div[1]/table/tbody/tr[1]/td[1]/div/div[1]/p/a').click()
 
 
 def AtLensPowerBcQtyContactlens(counter, Url, CellList):
 
     for x in counter:
 
-        chrome.get(Url[x])
-
-        if x == 1:
-
-            try:
-                dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_0'))
-                dropdown.select_by_index(1)
-            except:
-                time.sleep(1)
-                dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_0'))
-                dropdown.select_by_index(1)
-
-
-            try:
-                dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_1'))
-                dropdown.select_by_index(1)
-            except:
-                time.sleep(1)
-                dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_1'))
-                dropdown.select_by_index(1)
-
-
-            try:
-                dropdown = Select(chrome.find_element_by_name('CART_AMOUNT'))
-                dropdown.select_by_index(1)
-            except:
-                time.sleep(1)
-                dropdown = Select(chrome.find_element_by_name('CART_AMOUNT'))
-                dropdown.select_by_index(1)
-
-        elif x > 1:
-
-            try:
-                dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_0'))
-                dropdown.select_by_index(1)
-            except:
-                time.sleep(1)
-                dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_0'))
-                dropdown.select_by_index(1)
-
-
-            try:
-                dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_2'))
-                dropdown.select_by_index(1)
-            except:
-                time.sleep(1)
-                dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_2'))
-                dropdown.select_by_index(1)
-
-
-            try:
-                dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_1'))
-                dropdown.select_by_index(1)
-            except:
-                dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_1'))
-                dropdown.select_by_index(1)
-
-
-            try:
-                dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_3'))
-                dropdown.select_by_index(1)
-            except:
-                dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_3'))
-                dropdown.select_by_index(1)
-
-
         try:
-            chrome.find_element_by_xpath('/html/body/div[1]/div/div/div[2]/div[2]/div[6]/table/tbody/tr[2]/td[2]/div/span/a').click()
-        except:
+            chrome.get(Url[x])
+
+            if x == 1:
+
+                try:
+                    dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_0'))
+                    dropdown.select_by_index(1)
+                except:
+                    time.sleep(1)
+                    dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_0'))
+                    dropdown.select_by_index(1)
+
+
+                try:
+                    dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_1'))
+                    dropdown.select_by_index(1)
+                except:
+                    time.sleep(1)
+                    dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_1'))
+                    dropdown.select_by_index(1)
+
+
+                try:
+                    dropdown = Select(chrome.find_element_by_name('CART_AMOUNT'))
+                    dropdown.select_by_index(1)
+                except:
+                    time.sleep(1)
+                    dropdown = Select(chrome.find_element_by_name('CART_AMOUNT'))
+                    dropdown.select_by_index(1)
+
+            elif x > 1:
+
+                try:
+                    dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_0'))
+                    dropdown.select_by_index(1)
+                except:
+                    time.sleep(1)
+                    dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_0'))
+                    dropdown.select_by_index(1)
+
+
+                try:
+                    dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_2'))
+                    dropdown.select_by_index(1)
+                except:
+                    time.sleep(1)
+                    dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_2'))
+                    dropdown.select_by_index(1)
+
+
+                try:
+                    dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_1'))
+                    dropdown.select_by_index(1)
+                except:
+                    dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_1'))
+                    dropdown.select_by_index(1)
+
+
+                try:
+                    dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_3'))
+                    dropdown.select_by_index(1)
+                except:
+                    dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_3'))
+                    dropdown.select_by_index(1)
+
+
+            try:
+                chrome.find_element_by_xpath('/html/body/div[1]/div/div/div[2]/div[2]/div[6]/table/tbody/tr[2]/td[2]/div/span/a').click()
+            except:
+                chrome.find_element_by_xpath(
+                    '/html/body/div[1]/div/div/div[2]/div[2]/div[7]/table/tbody/tr[2]/td[2]/div/span/a').click()
+
+            time.sleep(1)
+            chrome.find_element_by_xpath('/html/body/div[1]/div/div/div[3]/div/div/div[3]/form/div[3]/a').click()
+            time.sleep(1)
+            # radiobtn = chrome.find_element_by_xpath('/html/body/div[1]/table/tbody/tr/td/div/div[1]/form/div[1]/div[2]/ul/li[1]/label')
+            # radiobtn.click()
+            radiobtn = chrome.find_element_by_xpath('/html/body/div[2]/div/div/div[3]/div/div/form/div[9]/input')
+            radiobtn.click()
+
+            # chrome.find_element_by_xpath('/html/body/div[3]/div/div[2]/div/div/div[3]/form/input[1]').click()
+
+            if x == 1:
+                GetPrice = chrome.find_elements_by_xpath(
+                    '/html/body/div[1]/div/div/div[3]/div/div/div[4]')
+                print(GetPrice)
+                if not GetPrice:
+                    time.sleep(1)
+                    GetPrice = chrome.find_elements_by_xpath(
+                        '/html/body/div[1]/div/div/div[3]/div/div/div[4]')
+                    print("repeat" + GetPrice)
+            elif x > 1:
+
+                GetPrice = chrome.find_elements_by_xpath(
+                    '/html/body/div[1]/div/div/div[3]/div/div/div[4]')
+                print(GetPrice)
+                if not GetPrice:
+                    time.sleep(1)
+                    GetPrice = chrome.find_elements_by_xpath(
+                        '/html/body/div[1]/div/div/div[3]/div/div/div[4]')
+                    print("repeat" + GetPrice)
+
+            for r in GetPrice:
+                UpdatePrice = r.text.strip(" \円合計：")
+
+                print(UpdatePrice)
+
+                creds = None
+                creds = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+
+                # The ID of a spreadsheet.
+                SAMPLE_SPREADSHEET_ID = '1taXktSkHSN3THYRP6m4wNeaP7vLrazemh132P_xLhDo'
+                service = build('sheets', 'v4', credentials=creds)
+
+                # Call the Sheets API
+                sheet = service.spreadsheets()
+
+                # result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
+                #                             range="10款1day格價!A1:BC39").execute()
+                # get googlesheet cell value
+                # values = result.get('values', [])
+                print(CellList[x])
+                sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range="10款1day格價!" + CellList[x],
+                                      valueInputOption="USER_ENTERED", body={"values": [[UpdatePrice]]}).execute()
+                # time.sleep(3)
+            chrome.get('https://www.atlens.jp/cart_index.html')
+            time.sleep(1)
             chrome.find_element_by_xpath(
-                '/html/body/div[1]/div/div/div[2]/div[2]/div[7]/table/tbody/tr[2]/td[2]/div/span/a').click()
-
-        time.sleep(1)
-        chrome.find_element_by_xpath('/html/body/div[1]/div/div/div[3]/div/div/div[3]/form/div[3]/a').click()
-        time.sleep(1)
-        # radiobtn = chrome.find_element_by_xpath('/html/body/div[1]/table/tbody/tr/td/div/div[1]/form/div[1]/div[2]/ul/li[1]/label')
-        # radiobtn.click()
-        radiobtn = chrome.find_element_by_xpath('/html/body/div[2]/div/div/div[3]/div/div/form/div[9]/input')
-        radiobtn.click()
-
-        # chrome.find_element_by_xpath('/html/body/div[3]/div/div[2]/div/div/div[3]/form/input[1]').click()
-
-        if x == 1:
-            GetPrice = chrome.find_elements_by_xpath(
-                '/html/body/div[1]/div/div/div[3]/div/div/div[4]')
-            print(GetPrice)
-            if not GetPrice:
-                time.sleep(1)
-                GetPrice = chrome.find_elements_by_xpath(
-                    '/html/body/div[1]/div/div/div[3]/div/div/div[4]')
-                print("repeat" + GetPrice)
-        elif x > 1:
-
-            GetPrice = chrome.find_elements_by_xpath(
-                '/html/body/div[1]/div/div/div[3]/div/div/div[4]')
-            print(GetPrice)
-            if not GetPrice:
-                time.sleep(1)
-                GetPrice = chrome.find_elements_by_xpath(
-                    '/html/body/div[1]/div/div/div[3]/div/div/div[4]')
-                print("repeat" + GetPrice)
-
-        for r in GetPrice:
-            UpdatePrice = r.text.strip(" \円合計：")
-
-            print(UpdatePrice)
-
-            creds = None
-            creds = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
-
-            # The ID of a spreadsheet.
-            SAMPLE_SPREADSHEET_ID = '1taXktSkHSN3THYRP6m4wNeaP7vLrazemh132P_xLhDo'
-            service = build('sheets', 'v4', credentials=creds)
-
-            # Call the Sheets API
-            sheet = service.spreadsheets()
-
-            # result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
-            #                             range="10款1day格價!A1:BC39").execute()
-            # get googlesheet cell value
-            # values = result.get('values', [])
-            print(CellList[x])
-            sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range="10款1day格價!" + CellList[x],
-                                  valueInputOption="USER_ENTERED", body={"values": [[UpdatePrice]]}).execute()
-            # time.sleep(3)
-        time.sleep(1)
-        chrome.find_element_by_xpath('/html/body/div[1]/div/div/div[1]/div/div/ul/li[6]/a').click()
-        time.sleep(1)
-        chrome.find_element_by_xpath(
-            '/html/body/div[1]/div/div/div[3]/div/div/div[2]/form/table/tbody/tr[2]/td[6]/span/input').click()
-
+                '/html/body/div[1]/div/div/div[3]/div/div/div[2]/form/table/tbody/tr[2]/td[6]/span/input').click()
+        except:
+            pass
 
 def AtLensPowerBcColorQtyContactlens(counter, Url, CellList):
 
     for x in counter:
-
-        chrome.get(Url[x])
-
-        if x == 1:
-
-            try:
-                dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_0'))
-                dropdown.select_by_index(1)
-            except:
-                time.sleep(1)
-                dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_0'))
-                dropdown.select_by_index(1)
-            else:
-                pass
-
-            try:
-                dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_1'))
-                dropdown.select_by_index(1)
-            except:
-                time.sleep(1)
-                dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_1'))
-                dropdown.select_by_index(1)
-            else:
-                pass
-
-            try:
-                dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_2'))
-                dropdown.select_by_index(1)
-            except:
-                time.sleep(1)
-                dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_2'))
-                dropdown.select_by_index(1)
-            else:
-                pass
-
-            try:
-                dropdown = Select(chrome.find_element_by_name('CART_AMOUNT'))
-                dropdown.select_by_index(1)
-            except:
-                time.sleep(1)
-                dropdown = Select(chrome.find_element_by_name('CART_AMOUNT'))
-                dropdown.select_by_index(1)
-
-            else:
-                pass
-
-
-
-        elif x > 1:
-
-            try:
-                dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_0'))
-                dropdown.select_by_index(1)
-            except:
-                time.sleep(1)
-                dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_0'))
-                dropdown.select_by_index(1)
-            else:
-                pass
-
-            try:
-                dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_2'))
-                dropdown.select_by_index(1)
-            except:
-                time.sleep(1)
-                dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_2'))
-                dropdown.select_by_index(1)
-            else:
-                pass
-
-            try:
-                dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_4'))
-                dropdown.select_by_index(1)
-            except:
-                time.sleep(1)
-                dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_4'))
-                dropdown.select_by_index(1)
-            else:
-                pass
-
-            try:
-                dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_1'))
-                dropdown.select_by_index(1)
-            except:
-                dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_1'))
-                dropdown.select_by_index(1)
-            else:
-                pass
-
-            try:
-                dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_3'))
-                dropdown.select_by_index(1)
-            except:
-                dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_3'))
-                dropdown.select_by_index(1)
-            else:
-                pass
-
-            try:
-                dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_5'))
-                dropdown.select_by_index(1)
-            except:
-                dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_5'))
-                dropdown.select_by_index(1)
-            else:
-                pass
         try:
+            chrome.get(Url[x])
+
+            if x == 1:
+
+                try:
+                    dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_0'))
+                    dropdown.select_by_index(1)
+                except:
+                    time.sleep(1)
+                    dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_0'))
+                    dropdown.select_by_index(1)
+                else:
+                    pass
+
+                try:
+                    dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_1'))
+                    dropdown.select_by_index(1)
+                except:
+                    time.sleep(1)
+                    dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_1'))
+                    dropdown.select_by_index(1)
+                else:
+                    pass
+
+                try:
+                    dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_2'))
+                    dropdown.select_by_index(1)
+                except:
+                    time.sleep(1)
+                    dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_2'))
+                    dropdown.select_by_index(1)
+                else:
+                    pass
+
+                try:
+                    dropdown = Select(chrome.find_element_by_name('CART_AMOUNT'))
+                    dropdown.select_by_index(1)
+                except:
+                    time.sleep(1)
+                    dropdown = Select(chrome.find_element_by_name('CART_AMOUNT'))
+                    dropdown.select_by_index(1)
+
+                else:
+                    pass
+
+
+
+            elif x > 1:
+
+                try:
+                    dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_0'))
+                    dropdown.select_by_index(1)
+                except:
+                    time.sleep(1)
+                    dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_0'))
+                    dropdown.select_by_index(1)
+                else:
+                    pass
+
+                try:
+                    dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_2'))
+                    dropdown.select_by_index(1)
+                except:
+                    time.sleep(1)
+                    dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_2'))
+                    dropdown.select_by_index(1)
+                else:
+                    pass
+
+                try:
+                    dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_4'))
+                    dropdown.select_by_index(1)
+                except:
+                    time.sleep(1)
+                    dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_4'))
+                    dropdown.select_by_index(1)
+                else:
+                    pass
+
+                try:
+                    dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_1'))
+                    dropdown.select_by_index(1)
+                except:
+                    dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_1'))
+                    dropdown.select_by_index(1)
+                else:
+                    pass
+
+                try:
+                    dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_3'))
+                    dropdown.select_by_index(1)
+                except:
+                    dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_3'))
+                    dropdown.select_by_index(1)
+                else:
+                    pass
+
+                try:
+                    dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_5'))
+                    dropdown.select_by_index(1)
+                except:
+                    dropdown = Select(chrome.find_element_by_id('ITEMPROPERTY_CD_5'))
+                    dropdown.select_by_index(1)
+                else:
+                    pass
+            try:
+                chrome.find_element_by_xpath(
+                    '/html/body/div[1]/div/div/div[2]/div[2]/div[6]/table/tbody/tr[2]/td[2]/div/span/a').click()
+            except:
+                chrome.find_element_by_xpath(
+                    '/html/body/div[1]/div/div/div[2]/div[2]/div[7]/table/tbody/tr[2]/td[2]/div/span/a').click()
+            time.sleep(1)
+            chrome.find_element_by_xpath('/html/body/div[1]/div/div/div[3]/div/div/div[3]/form/div[3]/a').click()
+            time.sleep(1)
+            # radiobtn = chrome.find_element_by_xpath('/html/body/div[1]/table/tbody/tr/td/div/div[1]/form/div[1]/div[2]/ul/li[1]/label')
+            # radiobtn.click()
+            radiobtn = chrome.find_element_by_xpath('/html/body/div[2]/div/div/div[3]/div/div/form/div[9]/input')
+            radiobtn.click()
+
+            # chrome.find_element_by_xpath('/html/body/div[3]/div/div[2]/div/div/div[3]/form/input[1]').click()
+
+            if x == 1:
+                GetPrice = chrome.find_elements_by_xpath(
+                    '/html/body/div[1]/div/div/div[3]/div/div/div[4]')
+                print(GetPrice)
+                if not GetPrice:
+                    time.sleep(1)
+                    GetPrice = chrome.find_elements_by_xpath(
+                        '/html/body/div[1]/div/div/div[3]/div/div/div[4]')
+                    print("repeat" + GetPrice)
+            elif x > 1:
+
+                GetPrice = chrome.find_elements_by_xpath(
+                    '/html/body/div[1]/div/div/div[3]/div/div/div[4]')
+                print(GetPrice)
+                if not GetPrice:
+                    time.sleep(1)
+                    GetPrice = chrome.find_elements_by_xpath(
+                        '/html/body/div[1]/div/div/div[3]/div/div/div[4]')
+                    print("repeat" + GetPrice)
+
+            for r in GetPrice:
+                UpdatePrice = r.text.strip(" \円合計：")
+
+                print(UpdatePrice)
+
+                creds = None
+                creds = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+
+                # The ID of a spreadsheet.
+                SAMPLE_SPREADSHEET_ID = '1taXktSkHSN3THYRP6m4wNeaP7vLrazemh132P_xLhDo'
+                service = build('sheets', 'v4', credentials=creds)
+
+                # Call the Sheets API
+                sheet = service.spreadsheets()
+
+                # result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
+                #                             range="10款1day格價!A1:BC39").execute()
+                # get googlesheet cell value
+                # values = result.get('values', [])
+                print(CellList[x])
+                sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range="10款1day格價!" + CellList[x],
+                                      valueInputOption="USER_ENTERED", body={"values": [[UpdatePrice]]}).execute()
+                # time.sleep(3)
+            time.sleep(1)
+            chrome.find_element_by_xpath('/html/body/div[1]/div/div/div[1]/div/div/ul/li[6]/a').click()
+            time.sleep(1)
             chrome.find_element_by_xpath(
-                '/html/body/div[1]/div/div/div[2]/div[2]/div[6]/table/tbody/tr[2]/td[2]/div/span/a').click()
+                '/html/body/div[1]/div/div/div[3]/div/div/div[2]/form/table/tbody/tr[2]/td[6]/span/input').click()
         except:
-            chrome.find_element_by_xpath(
-                '/html/body/div[1]/div/div/div[2]/div[2]/div[7]/table/tbody/tr[2]/td[2]/div/span/a').click()
-        time.sleep(1)
-        chrome.find_element_by_xpath('/html/body/div[1]/div/div/div[3]/div/div/div[3]/form/div[3]/a').click()
-        time.sleep(1)
-        # radiobtn = chrome.find_element_by_xpath('/html/body/div[1]/table/tbody/tr/td/div/div[1]/form/div[1]/div[2]/ul/li[1]/label')
-        # radiobtn.click()
-        radiobtn = chrome.find_element_by_xpath('/html/body/div[2]/div/div/div[3]/div/div/form/div[9]/input')
-        radiobtn.click()
-
-        # chrome.find_element_by_xpath('/html/body/div[3]/div/div[2]/div/div/div[3]/form/input[1]').click()
-
-        if x == 1:
-            GetPrice = chrome.find_elements_by_xpath(
-                '/html/body/div[1]/div/div/div[3]/div/div/div[4]')
-            print(GetPrice)
-            if not GetPrice:
-                time.sleep(1)
-                GetPrice = chrome.find_elements_by_xpath(
-                    '/html/body/div[1]/div/div/div[3]/div/div/div[4]')
-                print("repeat" + GetPrice)
-        elif x > 1:
-
-            GetPrice = chrome.find_elements_by_xpath(
-                '/html/body/div[1]/div/div/div[3]/div/div/div[4]')
-            print(GetPrice)
-            if not GetPrice:
-                time.sleep(1)
-                GetPrice = chrome.find_elements_by_xpath(
-                    '/html/body/div[1]/div/div/div[3]/div/div/div[4]')
-                print("repeat" + GetPrice)
-
-        for r in GetPrice:
-            UpdatePrice = r.text.strip(" \円合計：")
-
-            print(UpdatePrice)
-
-            creds = None
-            creds = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
-
-            # The ID of a spreadsheet.
-            SAMPLE_SPREADSHEET_ID = '1taXktSkHSN3THYRP6m4wNeaP7vLrazemh132P_xLhDo'
-            service = build('sheets', 'v4', credentials=creds)
-
-            # Call the Sheets API
-            sheet = service.spreadsheets()
-
-            # result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
-            #                             range="10款1day格價!A1:BC39").execute()
-            # get googlesheet cell value
-            # values = result.get('values', [])
-            print(CellList[x])
-            sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range="10款1day格價!" + CellList[x],
-                                  valueInputOption="USER_ENTERED", body={"values": [[UpdatePrice]]}).execute()
-            # time.sleep(3)
-        time.sleep(1)
-        chrome.find_element_by_xpath('/html/body/div[1]/div/div/div[1]/div/div/ul/li[6]/a').click()
-        time.sleep(1)
-        chrome.find_element_by_xpath(
-            '/html/body/div[1]/div/div/div[3]/div/div/div[2]/form/table/tbody/tr[2]/td[6]/span/input').click()
-
+            pass
 
 def SevenLensPowerBcQtyContactlens(counter, Url, CellList):
     for x in counter:
@@ -1581,11 +1438,19 @@ def LensZeroPowerOnlyContactlens(counter, Url, CellList):
             chrome.find_element_by_xpath('/html/body/div[3]/div[2]/article/form/table[3]/tbody/tr[2]/td[5]/input').click()
 
         chrome.find_element_by_xpath('/html/body/div[3]/div[2]/article/form/div[2]/ul/li[2]/input[3]').click()
-        # //*[@id="mypage"]/article/article/form/span/input[1]
-        chrome.find_element_by_xpath('/html/body/div[3]/div[2]/article/article/form/span/input[1]').click()
+
+        while 1:
+            start = time.process_time()
+            try:
+                chrome.find_element_by_xpath("/html/body/div[3]/div[2]/article/article/form/span/input[1]").click()
+                end = time.process_time()
+                break
+            except:
+                print("还未定位到元素!")
+
+        print('定位耗费时间：'+str(end-start))
 
         GetPrice = chrome.find_elements_by_xpath("/html/body/div[3]/div[2]/article[1]/div[1]/table/tbody/tr[6]/td[3]")
-
 
         for r in GetPrice:
 
@@ -1634,6 +1499,7 @@ def LensZeroPowerBCContactlens(counter, Url, CellList):
         except:
             time.sleep(1)
             chrome.find_element_by_xpath('/html/body/div[3]/div[2]/div/article/ul/li/ul/li/a').click()
+
         try:
             chrome.find_element_by_xpath('//*[@id="PMT031C"]').click()
         except:
@@ -1642,6 +1508,8 @@ def LensZeroPowerBCContactlens(counter, Url, CellList):
 
         chrome.find_element_by_xpath('/html/body/div[3]/div[2]/article/form/div[2]/ul/li[2]/input[3]').click()
 
+        wait = ui.WebDriverWait(chrome, 5)
+        wait.until(lambda driver: chrome.find_element_by_xpath("/html/body/div[3]/div[2]/article/article/form/span/input[1]"))
         chrome.find_element_by_xpath('/html/body/div[3]/div[2]/article/article/form/span/input[1]').click()
 
         #time.sleep(3)
@@ -1752,16 +1620,103 @@ def LensZeroPowerBCColorContactlens(counter, Url, CellList):
         chrome.get('https://www.lenszero.com/kago/delete/kagoKey/0/')
 
 
+def LaboPowerBCColorContactlens(counter, Url, CellList):
+
+    for x in counter:
+
+        chrome.get(Url[x])
+        if x == 1:
+            dropdown = Select(chrome.find_element_by_name('selRightEyeBC'))
+            dropdown.select_by_index(1)
+
+            dropdown = Select(chrome.find_element_by_name('selRightEyeColor'))
+            dropdown.select_by_index(4)
+
+            dropdown = Select(chrome.find_element_by_id('selRightEyePWR'))
+            dropdown.select_by_index(2)
+            chrome.find_element_by_name('txtAmount').clear()
+            chrome.find_element_by_name('txtAmount').send_keys(x)
+
+            chrome.find_element_by_id('cartbtn').click()
+        elif x > 1:
+            dropdown = Select(chrome.find_element_by_name('selRightEyeBC'))
+            dropdown.select_by_index(1)
+
+            dropdown = Select(chrome.find_element_by_name('selRightEyeColor'))
+            dropdown.select_by_index(4)
+
+            dropdown = Select(chrome.find_element_by_id('selRightEyePWR'))
+            dropdown.select_by_index(2)
+
+            dropdown = Select(chrome.find_element_by_name('selLeftEyeBC'))
+            dropdown.select_by_index(1)
+
+            dropdown = Select(chrome.find_element_by_name('selLeftEyeColor'))
+            dropdown.select_by_index(4)
+
+            dropdown = Select(chrome.find_element_by_id('selLeftEyePWR'))
+            dropdown.select_by_index(2)
+
+            chrome.find_element_by_id('cartbtn').click()
+
+        #time.sleep(1)
+
+        chrome.find_element_by_xpath('/html/body/div[1]/div[1]/article/section[2]/section/form[2]/p/input').click()
+        #time.sleep(1)
+        #/html/body/div[1]/div/article/section[2]/section/form[2]/div/table[3]/tbody/tr[3]/td/div/ins
+        radiobtn = chrome.find_element_by_xpath('/html/body/div[1]/div/article/section[2]/section/form[2]/div/table[3]/tbody/tr[3]/td/div/ins')
+        radiobtn.click()
+
+        wait = ui.WebDriverWait(chrome,5)
+        wait.until(lambda driver: chrome.find_element_by_xpath("/html/body/div[1]/div/article/section[2]/section/form[2]/div/p[5]/input"))
+        chrome.find_element_by_xpath("/html/body/div[1]/div/article/section[2]/section/form[2]/div/p[5]/input").click()
+
+        #/html/body/div[1]/div[1]/article/section[2]/section/table/tfoot/tr/td/table/tbody/tr[4]/td/strong
+        GetPrice = chrome.find_elements_by_xpath("/html/body/div[1]/div[1]/article/section[2]/section/table/tfoot/tr/td/table/tbody/tr[4]/td/strong")
+        #print(GetPrice)
+
+        for r in GetPrice:
+            UpdatePrice = r.text.strip(" \円")
+            print(UpdatePrice)
+
+            # CellList = ["", "R3", "S3", "", "T3", "", "U3", "", "V3"]
+
+            creds = None
+            creds = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+
+            # The ID of a spreadsheet.
+            SAMPLE_SPREADSHEET_ID = '1taXktSkHSN3THYRP6m4wNeaP7vLrazemh132P_xLhDo'
+            service = build('sheets', 'v4', credentials=creds)
+
+            # Call the Sheets API
+            sheet = service.spreadsheets()
+
+            # result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
+            #                             range="10款1day格價!A1:BC39").execute()
+            # get googlesheet cell value
+            # values = result.get('values', [])
+            print(CellList[x])
+            sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range="10款1day格價!" + CellList[x],
+                                  valueInputOption="USER_ENTERED", body={"values": [[UpdatePrice]]}).execute()
+
+        chrome.get('https://www.lens-labo.com/cart/main')
+        wait = ui.WebDriverWait(chrome, 5)
+        wait.until(lambda driver: chrome.find_element_by_xpath(
+            "/html/body/div[1]/div[1]/article/section[2]/section/form[1]/table/tbody/tr/td[5]/div/p/input"))
+        chrome.find_element_by_xpath(
+            '/html/body/div[1]/div[1]/article/section[2]/section/form[1]/table/tbody/tr/td[5]/div/p/input').click()
+
+
+
 if __name__ == '__main__':
 
-    #
+    # WEBSITE: LENSMODE
     options = Options()
     options.add_argument("--disable-notifications")
     options.add_argument("--start-maximized")
 
     chrome: WebDriver = webdriver.Chrome('./chromedriver', options=options)
 
-    # # WEBSITE: LENSMODE
     # chrome.get("https://www.lensmode.com/auth/login/redirectUrl/%252Fmypage%252Findex%252F/")
     #
     # chrome.find_element_by_xpath("/html/body/div[3]/div[2]/div[1]/article/form[1]/table/tbody/tr[2]/td[2]/input[1]").send_keys('lensmamajp@gmail.com')
@@ -1925,202 +1880,211 @@ if __name__ == '__main__':
     # CellList = ["", "AJ5", "AK5", "", "AL5", "", "AM5", "", "AN5"]
     # PowerOnlyContactlens(counter, Url, CellList)
     # """
-
-    #WEBSITE: Lens-labo
-
-    chrome.get("https://www.lens-labo.com/login")
-
-    chrome.find_element_by_xpath(
-        "/html/body/div[1]/div[1]/article/div[2]/div/form/div/section[1]/table/tbody/tr[1]/td[2]/input").send_keys(
-        'lensmamajp@gmail.com')
-    chrome.find_element_by_xpath(
-        "/html/body/div[1]/div[1]/article/div[2]/div/form/div/section[1]/table/tbody/tr[2]/td[2]/input").send_keys('kk20201201')
-    chrome.find_element_by_xpath(
-        '/html/body/div[1]/div[1]/article/div[2]/div/form/div/section[1]/p[2]/input').click()
-
-    # 1 Day Acuvue Define RC
-    counter = [1, 2, 4, 6, 8]
-    Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0005-1", "https://www.lens-labo.com/item/detail?itemcd=L0005-2", "",
-           "https://www.lens-labo.com/item/detail?itemcd=L0005-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0005-6", "",
-           "https://www.lens-labo.com/item/detail?itemcd=L0005-8"]
-    CellList = ["", "Z7", "AA7", "", "AB7", "", "AC7", "", "AD7"]
-    LaboPowerBCColorContactlens(counter, Url, CellList)
-
-    # Dailies Total 1
-    counter = [1, 2, 4, 6, 8]
-    Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0039-1", "https://www.lens-labo.com/item/detail?itemcd=L0039-2", "",
-           "https://www.lens-labo.com/item/detail?itemcd=L0039-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0039-6",
-           "", "https://www.lens-labo.com/item/detail?itemcd=L0039-8"]
-    CellList = ["","C7","D7","","E7","","F7","","G7"]
-    LaboPowerBCContactlens(counter, Url, CellList)
-
-    # 1 Day Acuvue Moist
-    counter = [1, 2, 4, 6, 8]
-    Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0001-1", "https://www.lens-labo.com/item/detail?itemcd=L0001-2", "",
-           "https://www.lens-labo.com/item/detail?itemcd=L0001-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0001-6",
-           "", "https://www.lens-labo.com/item/detail?itemcd=L0001-8"]
-    CellList = ["", "R7", "S7", "", "T7", "", "U7", "", "V7"]
-    LaboPowerBCQtyContactlens(counter, Url, CellList)
-
-    # 1 Day Acuvue Moist 90 PACK
-    counter = [1, 2, 4]
-    Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0120-1", "https://www.lens-labo.com/item/detail?itemcd=L0120-2", "", "https://www.lens-labo.com/item/detail?itemcd=L0120-4"]
-    CellList = ["", "W7", "X7", "", "Y7"]
-    LaboPowerBCQtyContactlens(counter, Url, CellList)
     #
-    # 1 Day Acuvue Trueye
-    counter = [1, 2, 4, 6, 8]
-    Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0002-1", "https://www.lens-labo.com/item/detail?itemcd=L0002-2", "",
-           "https://www.lens-labo.com/item/detail?itemcd=L0002-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0002-6",
-           "", "https://www.lens-labo.com/item/detail?itemcd=L0002-8"]
-    CellList = ["", "M7", "N7", "", "O7", "", "P7", "", "Q7"]
-    LaboPowerBCQtyContactlens(counter, Url, CellList)
+    # #WEBSITE: Lens-labo
     #
-    # 1 Day Acuvue Oasys
-    counter = [1, 2, 4, 6, 8]
-    Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0004-1", "https://www.lens-labo.com/item/detail?itemcd=L0004-2", "",
-           "https://www.lens-labo.com/item/detail?itemcd=L0004-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0004-6",
-           "", "https://www.lens-labo.com/item/detail?itemcd=L0004-8"]
-    CellList = ["", "H7", "I7", "", "J7", "", "K7", "", "L7"]
-    LaboPowerBCQtyContactlens(counter, Url, CellList)
-
-    # Myday 無出售
-
-    counter = [1, 2, 4, 6, 8]
-    Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0014-1", "https://www.lens-labo.com/item/detail?itemcd=L0014-2", "",
-           "https://www.lens-labo.com/item/detail?itemcd=L0014-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0014-6",
-           "", "https://www.lens-labo.com/item/detail?itemcd=L0014-8"]
-    CellList = ["", "AE7", "AF7", "", "AG7", "", "AH7", "", "AI7"]
-    LaboPowerBCQtyContactlens(counter, Url, CellList)
-
-
-    # Proclear 1 Day
-
-    counter = [1, 2, 4, 6, 8]
-    Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0012-1", "https://www.lens-labo.com/item/detail?itemcd=L0012-2", "",
-           "https://www.lens-labo.com/item/detail?itemcd=L0012-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0012-6",
-           "", "https://www.lens-labo.com/item/detail?itemcd=L0012-8"]
-    CellList = ["", "AJ7", "AK7", "", "AL7", "", "AM7", "", "AN7"]
-    LaboPowerBCQtyContactlens(counter, Url, CellList)
-
-    # 1 Day Biotrue
-    counter = [1, 2, 4, 6, 8]
-    Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0024-1", "https://www.lens-labo.com/item/detail?itemcd=L0024-2", "",
-           "https://www.lens-labo.com/item/detail?itemcd=L0024-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0024-6",
-           "", "https://www.lens-labo.com/item/detail?itemcd=L0024-8"]
-    CellList = ["", "AY7", "AZ7", "", "BA7", "", "BB7", "", "BC7"]
-    LaboPowerBCQtyContactlens(counter, Url, CellList)
-
-    # Medalist 1 day plus
-    counter = [1, 2, 4, 6, 8]
-    Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0003-1", "https://www.lens-labo.com/item/detail?itemcd=L0003-2", "",
-           "https://www.lens-labo.com/item/detail?itemcd=L0003-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0003-6",
-           "", "https://www.lens-labo.com/item/detail?itemcd=L0003-8"]
-    CellList = ["", "AT7", "AU7", "", "AV7", "", "AW7", "", "AX7"]
-    LaboPowerBCQtyContactlens(counter, Url, CellList)
-
-    # Biomedics 1 Day
-    counter = [1, 2, 4, 6, 8]
-    Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0013-1", "https://www.lens-labo.com/item/detail?itemcd=L0013-2", "",
-           "https://www.lens-labo.com/item/detail?itemcd=L0013-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0013-6",
-           "", "https://www.lens-labo.com/item/detail?itemcd=L0013-8"]
-    CellList = ["", "AO7", "AP7", "", "AQ7", "", "AR7", "", "AS7"]
-    LaboPowerBCQtyContactlens(counter, Url, CellList)
-
-    # Bestlens
-    chrome.get("https://www.bestlens.jp/auth/login/redirectUrl/%252Fmypage%252Findex%252F/")
-
-    chrome.find_element_by_name(
-        'userId').send_keys(
-        'lensmamajp@gmail.com')
-    chrome.find_element_by_name(
-        'passwd').send_keys(
-        'kk20201201')
-    chrome.find_element_by_name(
-        'submit').click()
-
-    # 1 Day Acuvue Define RC
-    counter = [1, 2, 4, 6, 8]
-    Url = ["", "https://www.bestlens.jp/goods/index/gc/J1MC/", "https://www.bestlens.jp/goods/index/gc/J1MC!2/", "",
-           "https://www.bestlens.jp/goods/index/gc/J1MC!4/", "", "https://www.bestlens.jp/goods/index/gc/J1MC!6/", "",
-           "https://www.bestlens.jp/goods/index/gc/J1MC!8/"]
-    CellList = ["", "Z9", "AA9", "", "AB9", "", "AC9", "", "AD9"]
-    BestLensPowerQtyContactlens(counter, Url, CellList)
-
-    # Dailies Total 1
-    counter = [1, 2, 4, 6, 8]
-    Url = ["", "https://www.bestlens.jp/goods/index/gc/C1T/", "https://www.bestlens.jp/goods/index/gc/C1T!2/", "",
-           "https://www.bestlens.jp/goods/index/gc/C1T!4/", "", "https://www.bestlens.jp/goods/index/gc/C1T!6/",
-           "", "https://www.bestlens.jp/goods/index/gc/C1T!8/"]
-    CellList = ["","C9","D9","","E9","","F9","","G9"]
-    BestLensPowerQtyContactlens(counter, Url, CellList)
-
-    # 1 Day Acuvue Moist
-    counter = [1, 2, 4, 6, 8]
-    Url = ["", "https://www.bestlens.jp/goods/index/gc/J1M/", "https://www.bestlens.jp/goods/index/gc/J1M!2/", "",
-           "https://www.bestlens.jp/goods/index/gc/J1M!4/", "", "https://www.bestlens.jp/goods/index/gc/J1M!6/",
-           "", "https://www.bestlens.jp/goods/index/gc/J1M!8/"]
-    CellList = ["", "R9", "S9", "", "T9", "", "U9", "", "V9"]
-    BestLensPowerBcQtyContactlens(counter, Url, CellList)
-
-    # 1 Day Acuvue Trueye
-    counter = [1, 2, 4, 6, 8]
-    Url = ["", "https://www.bestlens.jp/goods/index/gc/J1T/", "https://www.bestlens.jp/goods/index/gc/J1T!2/", "",
-           "https://www.bestlens.jp/goods/index/gc/J1T!4/", "", "https://www.bestlens.jp/goods/index/gc/J1T!6/",
-           "", "https://www.bestlens.jp/goods/index/gc/J1T!8/"]
-    CellList = ["", "M9", "N9", "", "O9", "", "P9", "", "Q9"]
-    BestLensPowerBcQtyContactlens(counter, Url, CellList)
-
-    # 1 Day Acuvue Oasys
-    counter = [1, 2, 4, 6, 8]
-    Url = ["", "https://www.bestlens.jp/goods/index/gc/JOS1/", "https://www.bestlens.jp/goods/index/gc/JOS1!2/", "",
-           "https://www.bestlens.jp/goods/index/gc/JOS1!4/", "", "https://www.bestlens.jp/goods/index/gc/JOS1!6/",
-           "", "https://www.bestlens.jp/goods/index/gc/JOS1!8/"]
-    CellList = ["", "H9", "I9", "", "J9", "", "K9", "", "L9"]
-    BestLensPowerBcQtyContactlens(counter, Url, CellList)
-
-    # Myday
-
-    counter = [1, 2, 4, 6, 8]
-    Url = ["", "https://www.bestlens.jp/goods/index/gc/CM1/", "https://www.bestlens.jp/goods/index/gc/CM1!2/", "",
-           "https://www.bestlens.jp/goods/index/gc/CM1!4/", "", "https://www.bestlens.jp/goods/index/gc/CM1!6/",
-           "", "https://www.bestlens.jp/goods/index/gc/CM1!8/"]
-    CellList = ["", "AE9", "AF9", "", "AG9", "", "AH9", "", "AI9"]
-    BestLensPowerQtyContactlens(counter, Url, CellList)
-
-
-    # Proclear 1 Day
-
-    counter = [1, 2, 4, 6, 8]
-    Url = ["", "https://www.bestlens.jp/goods/index/gc/CP1/", "https://www.bestlens.jp/goods/index/gc/CP1!2/", "",
-           "https://www.bestlens.jp/goods/index/gc/CP1!4/", "", "https://www.bestlens.jp/goods/index/gc/CP1!6/",
-           "", "https://www.bestlens.jp/goods/index/gc/CP1!8/"]
-    CellList = ["", "AJ9", "AK9", "", "AL9", "", "AM9", "", "AN9"]
-    BestLensPowerQtyContactlens(counter, Url, CellList)
-
-    # 1 Day Biotrue
-    counter = [1, 2, 4, 6, 8]
-    Url = ["", "https://www.bestlens.jp/goods/index/gc/B1T/", "https://www.bestlens.jp/goods/index/gc/B1T!2/", "",
-           "https://www.bestlens.jp/goods/index/gc/B1T!4/", "", "https://www.bestlens.jp/goods/index/gc/B1T!6/",
-           "", "https://www.bestlens.jp/goods/index/gc/B1T!8/"]
-    CellList = ["", "AY9", "AZ9", "", "BA9", "", "BB9", "", "BC9"]
-    BestLensPowerQtyContactlens(counter, Url, CellList)
-
-    # Medalist 1 day plus
-    counter = [1, 2, 4, 6, 8]
-    Url = ["", "https://www.bestlens.jp/goods/index/gc/B1N/", "https://www.bestlens.jp/goods/index/gc/B1N!2/", "",
-           "https://www.bestlens.jp/goods/index/gc/B1N!4/", "", "https://www.bestlens.jp/goods/index/gc/B1N!6/",
-           "", "https://www.bestlens.jp/goods/index/gc/B1N!8/"]
-    CellList = ["", "AT9", "AU9", "", "AV9", "", "AW9", "", "AX9"]
-    BestLensPowerQtyContactlens(counter, Url, CellList)
-
-    # Biomedics 1 Day
-    counter = [1, 2, 4, 6, 8]
-    Url = ["", "https://www.bestlens.jp/goods/index/gc/O1N/", "https://www.bestlens.jp/goods/index/gc/O1N!2/", "",
-           "https://www.bestlens.jp/goods/index/gc/O1N!4/", "", "https://www.bestlens.jp/goods/index/gc/O1N!6/",
-           "", "https://www.bestlens.jp/goods/index/gc/O1N!8/"]
-    CellList = ["", "AO9", "AP9", "", "AQ9", "", "AR9", "", "AS9"]
-    BestLensPowerQtyContactlens(counter, Url, CellList)
+    # chrome.get("https://www.lens-labo.com/login")
+    #
+    # chrome.find_element_by_xpath(
+    #     "/html/body/div[1]/div[1]/article/div[2]/div/form/div/section[1]/table/tbody/tr[1]/td[2]/input").send_keys(
+    #     'lensmamajp@gmail.com')
+    # chrome.find_element_by_xpath(
+    #     "/html/body/div[1]/div[1]/article/div[2]/div/form/div/section[1]/table/tbody/tr[2]/td[2]/input").send_keys('kk20201201')
+    # chrome.find_element_by_xpath(
+    #     '/html/body/div[1]/div[1]/article/div[2]/div/form/div/section[1]/p[2]/input').click()
+    #
+    #
+    # chrome.get("https://www.lens-labo.com/cart/main")
+    # try:
+    #     time.sleep(1)
+    #     chrome.find_element_by_xpath('/html/body/div[1]/div[1]/article/section[2]/section/form[1]/table/tbody/tr[1]/td[5]/div/p/input').click()
+    # except:
+    #     pass
+    #
+    #
+    # # 1 Day Acuvue Define RC
+    # counter = [1, 2, 4, 6, 8]
+    # Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0005-1", "https://www.lens-labo.com/item/detail?itemcd=L0005-2", "",
+    #        "https://www.lens-labo.com/item/detail?itemcd=L0005-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0005-6", "",
+    #        "https://www.lens-labo.com/item/detail?itemcd=L0005-8"]
+    # CellList = ["", "Z7", "AA7", "", "AB7", "", "AC7", "", "AD7"]
+    # LaboPowerBCColorContactlens(counter, Url, CellList)
+    #
+    # # Dailies Total 1
+    # counter = [1, 2, 4, 6, 8]
+    # Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0039-1", "https://www.lens-labo.com/item/detail?itemcd=L0039-2", "",
+    #        "https://www.lens-labo.com/item/detail?itemcd=L0039-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0039-6",
+    #        "", "https://www.lens-labo.com/item/detail?itemcd=L0039-8"]
+    # CellList = ["","C7","D7","","E7","","F7","","G7"]
+    # LaboPowerBCContactlens(counter, Url, CellList)
+    #
+    # # 1 Day Acuvue Moist
+    # counter = [1, 2, 4, 6, 8]
+    # Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0001-1", "https://www.lens-labo.com/item/detail?itemcd=L0001-2", "",
+    #        "https://www.lens-labo.com/item/detail?itemcd=L0001-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0001-6",
+    #        "", "https://www.lens-labo.com/item/detail?itemcd=L0001-8"]
+    # CellList = ["", "R7", "S7", "", "T7", "", "U7", "", "V7"]
+    # LaboPowerBCQtyContactlens(counter, Url, CellList)
+    #
+    # # 1 Day Acuvue Moist 90 PACK
+    # counter = [1, 2, 4]
+    # Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0120-1", "https://www.lens-labo.com/item/detail?itemcd=L0120-2", "", "https://www.lens-labo.com/item/detail?itemcd=L0120-4"]
+    # CellList = ["", "W7", "X7", "", "Y7"]
+    # LaboPowerBCQtyContactlens(counter, Url, CellList)
+    # #
+    # # 1 Day Acuvue Trueye
+    # counter = [1, 2, 4, 6, 8]
+    # Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0002-1", "https://www.lens-labo.com/item/detail?itemcd=L0002-2", "",
+    #        "https://www.lens-labo.com/item/detail?itemcd=L0002-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0002-6",
+    #        "", "https://www.lens-labo.com/item/detail?itemcd=L0002-8"]
+    # CellList = ["", "M7", "N7", "", "O7", "", "P7", "", "Q7"]
+    # LaboPowerBCQtyContactlens(counter, Url, CellList)
+    # #
+    # # 1 Day Acuvue Oasys
+    # counter = [1, 2, 4, 6, 8]
+    # Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0004-1", "https://www.lens-labo.com/item/detail?itemcd=L0004-2", "",
+    #        "https://www.lens-labo.com/item/detail?itemcd=L0004-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0004-6",
+    #        "", "https://www.lens-labo.com/item/detail?itemcd=L0004-8"]
+    # CellList = ["", "H7", "I7", "", "J7", "", "K7", "", "L7"]
+    # LaboPowerBCQtyContactlens(counter, Url, CellList)
+    #
+    # # Myday 無出售
+    #
+    # counter = [1, 2, 4, 6, 8]
+    # Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0014-1", "https://www.lens-labo.com/item/detail?itemcd=L0014-2", "",
+    #        "https://www.lens-labo.com/item/detail?itemcd=L0014-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0014-6",
+    #        "", "https://www.lens-labo.com/item/detail?itemcd=L0014-8"]
+    # CellList = ["", "AE7", "AF7", "", "AG7", "", "AH7", "", "AI7"]
+    # LaboPowerBCQtyContactlens(counter, Url, CellList)
+    #
+    #
+    # # Proclear 1 Day
+    #
+    # counter = [1, 2, 4, 6, 8]
+    # Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0012-1", "https://www.lens-labo.com/item/detail?itemcd=L0012-2", "",
+    #        "https://www.lens-labo.com/item/detail?itemcd=L0012-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0012-6",
+    #        "", "https://www.lens-labo.com/item/detail?itemcd=L0012-8"]
+    # CellList = ["", "AJ7", "AK7", "", "AL7", "", "AM7", "", "AN7"]
+    # LaboPowerBCQtyContactlens(counter, Url, CellList)
+    #
+    # # 1 Day Biotrue
+    # counter = [1, 2, 4, 6, 8]
+    # Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0024-1", "https://www.lens-labo.com/item/detail?itemcd=L0024-2", "",
+    #        "https://www.lens-labo.com/item/detail?itemcd=L0024-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0024-6",
+    #        "", "https://www.lens-labo.com/item/detail?itemcd=L0024-8"]
+    # CellList = ["", "AY7", "AZ7", "", "BA7", "", "BB7", "", "BC7"]
+    # LaboPowerBCQtyContactlens(counter, Url, CellList)
+    #
+    # # Medalist 1 day plus
+    # counter = [1, 2, 4, 6, 8]
+    # Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0003-1", "https://www.lens-labo.com/item/detail?itemcd=L0003-2", "",
+    #        "https://www.lens-labo.com/item/detail?itemcd=L0003-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0003-6",
+    #        "", "https://www.lens-labo.com/item/detail?itemcd=L0003-8"]
+    # CellList = ["", "AT7", "AU7", "", "AV7", "", "AW7", "", "AX7"]
+    # LaboPowerBCQtyContactlens(counter, Url, CellList)
+    #
+    # # Biomedics 1 Day
+    # counter = [1, 2, 4, 6, 8]
+    # Url = ["", "https://www.lens-labo.com/item/detail?itemcd=L0013-1", "https://www.lens-labo.com/item/detail?itemcd=L0013-2", "",
+    #        "https://www.lens-labo.com/item/detail?itemcd=L0013-4", "", "https://www.lens-labo.com/item/detail?itemcd=L0013-6",
+    #        "", "https://www.lens-labo.com/item/detail?itemcd=L0013-8"]
+    # CellList = ["", "AO7", "AP7", "", "AQ7", "", "AR7", "", "AS7"]
+    # LaboPowerBCQtyContactlens(counter, Url, CellList)
+    #
+    # # Bestlens
+    # chrome.get("https://www.bestlens.jp/auth/login/redirectUrl/%252Fmypage%252Findex%252F/")
+    #
+    # chrome.find_element_by_name(
+    #     'userId').send_keys(
+    #     'lensmamajp@gmail.com')
+    # chrome.find_element_by_name(
+    #     'passwd').send_keys(
+    #     'kk20201201')
+    # chrome.find_element_by_name(
+    #     'submit').click()
+    #
+    # # 1 Day Acuvue Define RC
+    # counter = [1, 2, 4, 6, 8]
+    # Url = ["", "https://www.bestlens.jp/goods/index/gc/J1MC/", "https://www.bestlens.jp/goods/index/gc/J1MC!2/", "",
+    #        "https://www.bestlens.jp/goods/index/gc/J1MC!4/", "", "https://www.bestlens.jp/goods/index/gc/J1MC!6/", "",
+    #        "https://www.bestlens.jp/goods/index/gc/J1MC!8/"]
+    # CellList = ["", "Z9", "AA9", "", "AB9", "", "AC9", "", "AD9"]
+    # BestLensPowerQtyContactlens(counter, Url, CellList)
+    #
+    # # Dailies Total 1
+    # counter = [1, 2, 4, 6, 8]
+    # Url = ["", "https://www.bestlens.jp/goods/index/gc/C1T/", "https://www.bestlens.jp/goods/index/gc/C1T!2/", "",
+    #        "https://www.bestlens.jp/goods/index/gc/C1T!4/", "", "https://www.bestlens.jp/goods/index/gc/C1T!6/",
+    #        "", "https://www.bestlens.jp/goods/index/gc/C1T!8/"]
+    # CellList = ["","C9","D9","","E9","","F9","","G9"]
+    # BestLensPowerQtyContactlens(counter, Url, CellList)
+    #
+    # # 1 Day Acuvue Moist
+    # counter = [1, 2, 4, 6, 8]
+    # Url = ["", "https://www.bestlens.jp/goods/index/gc/J1M/", "https://www.bestlens.jp/goods/index/gc/J1M!2/", "",
+    #        "https://www.bestlens.jp/goods/index/gc/J1M!4/", "", "https://www.bestlens.jp/goods/index/gc/J1M!6/",
+    #        "", "https://www.bestlens.jp/goods/index/gc/J1M!8/"]
+    # CellList = ["", "R9", "S9", "", "T9", "", "U9", "", "V9"]
+    # BestLensPowerBcQtyContactlens(counter, Url, CellList)
+    #
+    # # 1 Day Acuvue Trueye
+    # counter = [1, 2, 4, 6, 8]
+    # Url = ["", "https://www.bestlens.jp/goods/index/gc/J1T/", "https://www.bestlens.jp/goods/index/gc/J1T!2/", "",
+    #        "https://www.bestlens.jp/goods/index/gc/J1T!4/", "", "https://www.bestlens.jp/goods/index/gc/J1T!6/",
+    #        "", "https://www.bestlens.jp/goods/index/gc/J1T!8/"]
+    # CellList = ["", "M9", "N9", "", "O9", "", "P9", "", "Q9"]
+    # BestLensPowerBcQtyContactlens(counter, Url, CellList)
+    #
+    # # 1 Day Acuvue Oasys
+    # counter = [1, 2, 4, 6, 8]
+    # Url = ["", "https://www.bestlens.jp/goods/index/gc/JOS1/", "https://www.bestlens.jp/goods/index/gc/JOS1!2/", "",
+    #        "https://www.bestlens.jp/goods/index/gc/JOS1!4/", "", "https://www.bestlens.jp/goods/index/gc/JOS1!6/",
+    #        "", "https://www.bestlens.jp/goods/index/gc/JOS1!8/"]
+    # CellList = ["", "H9", "I9", "", "J9", "", "K9", "", "L9"]
+    # BestLensPowerBcQtyContactlens(counter, Url, CellList)
+    #
+    # # Myday
+    #
+    # counter = [1, 2, 4, 6, 8]
+    # Url = ["", "https://www.bestlens.jp/goods/index/gc/CM1/", "https://www.bestlens.jp/goods/index/gc/CM1!2/", "",
+    #        "https://www.bestlens.jp/goods/index/gc/CM1!4/", "", "https://www.bestlens.jp/goods/index/gc/CM1!6/",
+    #        "", "https://www.bestlens.jp/goods/index/gc/CM1!8/"]
+    # CellList = ["", "AE9", "AF9", "", "AG9", "", "AH9", "", "AI9"]
+    # BestLensPowerQtyContactlens(counter, Url, CellList)
+    #
+    #
+    # # Proclear 1 Day
+    #
+    # counter = [1, 2, 4, 6, 8]
+    # Url = ["", "https://www.bestlens.jp/goods/index/gc/CP1/", "https://www.bestlens.jp/goods/index/gc/CP1!2/", "",
+    #        "https://www.bestlens.jp/goods/index/gc/CP1!4/", "", "https://www.bestlens.jp/goods/index/gc/CP1!6/",
+    #        "", "https://www.bestlens.jp/goods/index/gc/CP1!8/"]
+    # CellList = ["", "AJ9", "AK9", "", "AL9", "", "AM9", "", "AN9"]
+    # BestLensPowerQtyContactlens(counter, Url, CellList)
+    #
+    # # 1 Day Biotrue
+    # counter = [1, 2, 4, 6, 8]
+    # Url = ["", "https://www.bestlens.jp/goods/index/gc/B1T/", "https://www.bestlens.jp/goods/index/gc/B1T!2/", "",
+    #        "https://www.bestlens.jp/goods/index/gc/B1T!4/", "", "https://www.bestlens.jp/goods/index/gc/B1T!6/",
+    #        "", "https://www.bestlens.jp/goods/index/gc/B1T!8/"]
+    # CellList = ["", "AY9", "AZ9", "", "BA9", "", "BB9", "", "BC9"]
+    # BestLensPowerQtyContactlens(counter, Url, CellList)
+    #
+    # # Medalist 1 day plus
+    # counter = [1, 2, 4, 6, 8]
+    # Url = ["", "https://www.bestlens.jp/goods/index/gc/B1N/", "https://www.bestlens.jp/goods/index/gc/B1N!2/", "",
+    #        "https://www.bestlens.jp/goods/index/gc/B1N!4/", "", "https://www.bestlens.jp/goods/index/gc/B1N!6/",
+    #        "", "https://www.bestlens.jp/goods/index/gc/B1N!8/"]
+    # CellList = ["", "AT9", "AU9", "", "AV9", "", "AW9", "", "AX9"]
+    # BestLensPowerQtyContactlens(counter, Url, CellList)
+    #
+    # # Biomedics 1 Day
+    # counter = [1, 2, 4, 6, 8]
+    # Url = ["", "https://www.bestlens.jp/goods/index/gc/O1N/", "https://www.bestlens.jp/goods/index/gc/O1N!2/", "",
+    #        "https://www.bestlens.jp/goods/index/gc/O1N!4/", "", "https://www.bestlens.jp/goods/index/gc/O1N!6/",
+    #        "", "https://www.bestlens.jp/goods/index/gc/O1N!8/"]
+    # CellList = ["", "AO9", "AP9", "", "AQ9", "", "AR9", "", "AS9"]
+    # BestLensPowerQtyContactlens(counter, Url, CellList)
 
     # Lens Apple
     chrome.get("https://www.lens-apple.jp/auth/login/redirectUrl/%252Fmypage%252Findex%252F/")
@@ -2131,8 +2095,11 @@ if __name__ == '__main__':
     chrome.find_element_by_name(
         'passwd').send_keys(
         'kk20201201')
+    wait = ui.WebDriverWait(chrome, 10)
+    wait.until(lambda driver: chrome.find_element_by_xpath(
+        '/html/body/div[1]/div[2]/main/section/div[1]/section[1]/form/button'))
     chrome.find_element_by_xpath(
-        '/html/body/div[1]/table/tbody/tr/td[2]/div[3]/table[1]/tbody/tr[3]/td/table/tbody/tr/td[1]/form/table/tbody/tr[2]/td/input').click()
+        '/html/body/div[1]/div[2]/main/section/div[1]/section[1]/form/button').click()
 
     # 1 Day Acuvue Oasys
     counter = [1, 2, 4, 6, 8]
@@ -2199,7 +2166,7 @@ if __name__ == '__main__':
     LensApplePowerBcQtyContactlens(counter, Url, CellList)
 
 
-    # At Lens
+    # At Lens (will block ip)
     chrome.get("https://www.atlens.jp/")
 
     chrome.find_element_by_id(
@@ -2275,7 +2242,7 @@ if __name__ == '__main__':
     CellList = ["", "W25", "X25", "", "Y25"]
     AtLensPowerBcQtyContactlens(counter, Url, CellList)
 
-    # At Lens
+    # 7 Lens
     chrome.get("https://www.7lens.jp/")
 
     chrome.find_element_by_id(
