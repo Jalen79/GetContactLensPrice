@@ -21,7 +21,6 @@ def PowerOnlyContactlens(counter, Url, CellList):
         try:
 
             chrome.get('https://www.lensmode.com/kago/delete/kagoKey/0/')
-
             chrome.get(Url)
             time.sleep(1)
             dropdown = Select(chrome.find_element_by_id('PWR'))
@@ -68,10 +67,6 @@ def PowerOnlyContactlens(counter, Url, CellList):
                 # Call the Sheets API
                 sheet = service.spreadsheets()
 
-                # result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
-                #                             range="10款1day格價!A1:BC39").execute()
-                # get googlesheet cell value
-                # values = result.get('values', [])
                 print(CellList[x])
                 sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range="10款1day格價!" + CellList[x],
                                       valueInputOption="USER_ENTERED", body={"values": [[UpdatePrice]]}).execute()
@@ -98,7 +93,6 @@ def PowerBCContactlens(counter, Url, CellList):
             dropdown1 = Select(chrome.find_element_by_id('NUM'))
             dropdown1.select_by_index(x)
 
-            #chrome.find_element_by_xpath('/html/body/div[3]/div[2]/article/article[1]/form/div/ul[2]/li/input[3]').click()
             chrome.find_element_by_class_name('btn_cart241').click()
 
             try:
@@ -111,10 +105,6 @@ def PowerBCContactlens(counter, Url, CellList):
             except:
                 time.sleep(1)
                 chrome.find_element_by_xpath('/html/body/div[3]/div[2]/article/form/table[3]/tbody/tr[2]/td[5]/input').click()
-
-            # wait = ui.WebDriverWait(chrome,10)
-            # wait.until(lambda driver: chrome.find_element_by_xpath("/html/body/div[3]/div[2]/article/form/div[2]/ul/li[2]/input[3]"))
-            # chrome.find_element_by_xpath('/html/body/div[3]/div[2]/article/form/div[2]/ul/li[2]/input[3]').click()
 
             wait = ui.WebDriverWait(chrome,10)
             wait.until(lambda driver: chrome.find_element_by_xpath("/html/body/div[3]/div[2]/article/form/div[2]/ul/li[2]/input[3]"))
@@ -133,8 +123,6 @@ def PowerBCContactlens(counter, Url, CellList):
                 UpdatePrice = r.text.strip(" \¥")
                 print(UpdatePrice)
 
-                # CellList = ["", "R3", "S3", "", "T3", "", "U3", "", "V3"]
-
                 creds = None
                 creds = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
 
@@ -145,14 +133,9 @@ def PowerBCContactlens(counter, Url, CellList):
                 # Call the Sheets API
                 sheet = service.spreadsheets()
 
-                # result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
-                #                             range="10款1day格價!A1:BC39").execute()
-                # get googlesheet cell value
-                # values = result.get('values', [])
                 print(CellList[x])
                 sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range="10款1day格價!" + CellList[x],
                                       valueInputOption="USER_ENTERED", body={"values": [[UpdatePrice]]}).execute()
-
 
         except:
             print(CellList[x] + "Update fail")
@@ -246,14 +229,21 @@ def LaboPowerBCContactlens(counter, Url, CellList):
         try:
 
             chrome.get('https://www.lens-labo.com/cart/main')
-            try:
-                wait = ui.WebDriverWait(chrome, 5)
-                wait.until(lambda driver: chrome.find_element_by_xpath(
-                    "/html/body/div[1]/div[1]/article/section[2]/section/form[1]/table/tbody/tr/td[5]/div/p/input"))
-                chrome.find_element_by_xpath(
-                    '/html/body/div[1]/div[1]/article/section[2]/section/form[1]/table/tbody/tr/td[5]/div/p/input').click()
-            except:
-                pass
+
+            while 1:
+                start = time.process_time()
+                try:
+                    chrome.find_element_by_xpath('/html/body/div[1]/div[1]/article/section[2]/section/form[1]/table/tbody/tr/td[5]/div/p/input').click()
+                    end = time.process_time()
+                    break
+                except:
+                    if start > 2:
+                        end = time.process_time()
+                        break
+                        print("over 2 seconds")
+
+            print('定位耗费时间：' + str(end - start))
+
 
             chrome.get(Url[x])
             if x == 1:
@@ -302,8 +292,6 @@ def LaboPowerBCContactlens(counter, Url, CellList):
                 UpdatePrice = r.text.strip(" \円")
                 print(UpdatePrice)
 
-                # CellList = ["", "R3", "S3", "", "T3", "", "U3", "", "V3"]
-
                 creds = None
                 creds = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
 
@@ -314,10 +302,6 @@ def LaboPowerBCContactlens(counter, Url, CellList):
                 # Call the Sheets API
                 sheet = service.spreadsheets()
 
-                # result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
-                #                             range="10款1day格價!A1:BC39").execute()
-                # get googlesheet cell value
-                # values = result.get('values', [])
                 print(CellList[x])
                 sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range="10款1day格價!" + CellList[x],
                                       valueInputOption="USER_ENTERED", body={"values": [[UpdatePrice]]}).execute()
@@ -332,15 +316,19 @@ def LaboPowerBCQtyContactlens(counter, Url, CellList):
 
         try:
             chrome.get('https://www.lens-labo.com/cart/main')
-            try:
-                wait = ui.WebDriverWait(chrome, 5)
-                wait.until(lambda driver: chrome.find_element_by_xpath(
-                    "/html/body/div[1]/div[1]/article/section[2]/section/form[1]/table/tbody/tr/td[5]/div/p/input"))
+            while 1:
+                start = time.process_time()
+                try:
+                    chrome.find_element_by_xpath('/html/body/div[1]/div[1]/article/section[2]/section/form[1]/table/tbody/tr/td[5]/div/p/input').click()
+                    end = time.process_time()
+                    break
+                except:
+                    if start > 2:
+                        end = time.process_time()
+                        break
+                        print("over 2 seconds")
 
-                chrome.find_element_by_xpath(
-                    '/html/body/div[1]/div[1]/article/section[2]/section/form[1]/table/tbody/tr/td[5]/div/p/input').click()
-            except:
-                pass
+            print('定位耗费时间：' + str(end - start))
 
             chrome.get(Url[x])
 
@@ -431,6 +419,20 @@ def BestLensPowerQtyContactlens(counter, Url, CellList):
     for x in counter:
 
         try:
+            chrome.get('https://www.bestlens.jp/kago/')
+            while 1:
+                start = time.process_time()
+                try:
+                    chrome.find_element_by_xpath('/html/body/div[3]/div/div[2]/div/div/div[2]/div[1]/div/table/tbody/tr[2]/td[5]/a').click()
+                    end = time.process_time()
+                    break
+                except:
+                    if start > 2:
+                        end = time.process_time()
+                        break
+                        print("over 2 seconds")
+
+            print('定位耗费时间：' + str(end - start))
 
             chrome.get(Url[x])
 
@@ -492,12 +494,6 @@ def BestLensPowerQtyContactlens(counter, Url, CellList):
                 sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range="10款1day格價!" + CellList[x],
                                       valueInputOption="USER_ENTERED", body={"values": [[UpdatePrice]]}).execute()
 
-            time.sleep(1)
-            chrome.find_element_by_xpath('/html/body/div[1]/div[1]/div/ul/li[5]/a').click()
-            time.sleep(1)
-            chrome.find_element_by_xpath(
-                '/html/body/div[3]/div/div[2]/div/div/div[2]/div[1]/div/table/tbody/tr[2]/td[5]/a').click()
-
         except:
             print(CellList[x] + "Update fail")
             failList.append(CellList[x])
@@ -508,7 +504,21 @@ def BestLensPowerBcQtyContactlens(counter, Url, CellList):
     for x in counter:
 
         try:
+            chrome.get('https://www.bestlens.jp/kago/')
+            while 1:
+                start = time.process_time()
+                try:
+                    chrome.find_element_by_xpath('/html/body/div[3]/div/div[2]/div/div/div[2]/div[1]/div/table/tbody/tr[2]/td[5]/a').click()
+                    end = time.process_time()
+                    break
+                except:
+                    if start > 2:
+                        end = time.process_time()
+                        break
+                        print("over 2 seconds")
 
+
+            print('定位耗费时间：' + str(end - start))
             chrome.get(Url[x])
 
             if x == 1:
@@ -579,12 +589,6 @@ def BestLensPowerBcQtyContactlens(counter, Url, CellList):
                 sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range="10款1day格價!" + CellList[x],
                                       valueInputOption="USER_ENTERED", body={"values": [[UpdatePrice]]}).execute()
 
-            time.sleep(1)
-            chrome.find_element_by_xpath('/html/body/div[1]/div[1]/div/ul/li[5]/a').click()
-            time.sleep(1)
-            chrome.find_element_by_xpath(
-                '/html/body/div[3]/div/div[2]/div/div/div[2]/div[1]/div/table/tbody/tr[2]/td[5]/a').click()
-
         except:
             print(CellList[x] + "Update fail")
             failList.append(CellList[x])
@@ -597,11 +601,20 @@ def LensApplePowerBcQtyContactlens(counter, Url, CellList):
 
         try:
             chrome.get("https://www.lens-apple.jp/kago/")
-            try:
-                chrome.find_element_by_xpath(
-                    '/html/body/div[1]/div[2]/main/section/div[1]/table/tbody/tr[1]/td[1]/div/div[1]/p/a').click()
-            except:
-                pass
+            while 1:
+                start = time.process_time()
+                try:
+                    chrome.find_element_by_xpath('/html/body/div[1]/div[2]/main/section/div[1]/table/tbody/tr[1]/td[1]/div/div[1]/p/a').click()
+                    end = time.process_time()
+                    break
+                except:
+                    if start > 2:
+                        end = time.process_time()
+                        break
+                        print("over 2 seconds")
+
+
+            print('定位耗费时间：' + str(end - start))
 
             chrome.get(Url[x])
 
@@ -682,12 +695,20 @@ def LensApplePowerQtyContactlens(counter, Url, CellList):
     for x in counter:
 
         try:
-
             chrome.get("https://www.lens-apple.jp/kago/")
-            try:
-                chrome.find_element_by_xpath('/html/body/div[1]/div[2]/main/section/div[1]/table/tbody/tr[1]/td[1]/div/div[1]/p/a').click()
-            except:
-                pass
+            while 1:
+                start = time.process_time()
+                try:
+                    chrome.find_element_by_xpath('/html/body/div[1]/div[2]/main/section/div[1]/table/tbody/tr[1]/td[1]/div/div[1]/p/a').click()
+                    end = time.process_time()
+                    break
+                except:
+                    if start > 2:
+                        end = time.process_time()
+                        break
+                        print("over 2 seconds")
+
+            print('定位耗费时间：' + str(end - start))
 
             chrome.get(Url[x])
 
@@ -757,13 +778,21 @@ def AtLensPowerBcQtyContactlens(counter, Url, CellList):
 
         try:
             chrome.get('https://www.atlens.jp/cart_index.html')
-            time.sleep(1)
-            try:
-                chrome.find_element_by_xpath(
-                    '/html/body/div[1]/div/div/div[3]/div/div/div[2]/form/table/tbody/tr[2]/td[6]/span/input').click()
-                chrome.get(Url[x])
-            except:
-                pass
+            while 1:
+                start = time.process_time()
+                try:
+                    chrome.find_element_by_xpath('/html/body/div[1]/div/div/div[3]/div/div/div[2]/form/table/tbody/tr[2]/td[6]/span/input').click()
+                    end = time.process_time()
+                    break
+                except:
+                    if start > 2:
+                        end = time.process_time()
+                        break
+                        print("over 2 seconds")
+
+            print('定位耗费时间：' + str(end - start))
+
+            chrome.get(Url[x])
 
             if x == 1:
 
@@ -848,7 +877,20 @@ def AtLensPowerBcColorQtyContactlens(counter, Url, CellList):
     for x in counter:
 
         try:
+            chrome.get('https://www.atlens.jp/cart_index.html')
+            while 1:
+                start = time.process_time()
+                try:
+                    chrome.find_element_by_xpath('/html/body/div[1]/div/div/div[3]/div/div/div[2]/form/table/tbody/tr[2]/td[6]/span/input').click()
+                    end = time.process_time()
+                    break
+                except:
+                    if start > 2:
+                        end = time.process_time()
+                        break
+                        print("over 2 seconds")
 
+            print('定位耗费时间：' + str(end - start))
             chrome.get(Url[x])
 
             if x == 1:
@@ -946,6 +988,20 @@ def SevenLensPowerBcQtyContactlens(counter, Url, CellList):
     for x in counter:
 
         try:
+            chrome.get('https://www.7lens.jp/cart_index.html')
+            while 1:
+                start = time.process_time()
+                try:
+                    chrome.find_element_by_xpath('/html/body/div/div[2]/div/div[2]/div[2]/div/div[1]/div[2]/form/table/tbody/tr[2]/td[6]/span/input').click()
+                    end = time.process_time()
+                    break
+                except:
+                    if start > 2:
+                        end = time.process_time()
+                        break
+                        print("over 2 seconds")
+
+            print('定位耗费时间：' + str(end - start))
 
             chrome.get(Url[x])
 
@@ -1017,12 +1073,6 @@ def SevenLensPowerBcQtyContactlens(counter, Url, CellList):
                 print(CellList[x])
                 sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range="10款1day格價!" + CellList[x],
                                       valueInputOption="USER_ENTERED", body={"values": [[UpdatePrice]]}).execute()
-                # time.sleep(3)
-            time.sleep(1)
-            chrome.find_element_by_xpath('/html/body/div[1]/div/div[2]/div/a').click()
-            time.sleep(1)
-            chrome.find_element_by_xpath(
-                '/html/body/div/div[2]/div/div[2]/div[2]/div/div[1]/div[2]/form/table/tbody/tr[2]/td[6]/span/input').click()
 
         except:
             print(CellList[x] + "Update fail")
@@ -1033,6 +1083,18 @@ def SevenLensPowerBcColorQtyContactlens(counter, Url, CellList):
     for x in counter:
 
         try:
+            chrome.get('https://www.7lens.jp/cart_index.html')
+            while 1:
+                start = time.process_time()
+                try:
+                    chrome.find_element_by_xpath('/html/body/div/div[2]/div/div[2]/div[2]/div/div[1]/div[2]/form/table/tbody/tr[2]/td[6]/span/input').click()
+                    end = time.process_time()
+                    break
+                except:
+                    if start > 2:
+                        end = time.process_time()
+                        break
+                        print("over 2 seconds")
 
             chrome.get(Url[x])
 
@@ -1117,12 +1179,6 @@ def SevenLensPowerBcColorQtyContactlens(counter, Url, CellList):
                 print(CellList[x])
                 sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range="10款1day格價!" + CellList[x],
                                       valueInputOption="USER_ENTERED", body={"values": [[UpdatePrice]]}).execute()
-                # time.sleep(3)
-            time.sleep(1)
-            chrome.find_element_by_xpath('/html/body/div[1]/div/div[2]/div/a').click()
-            time.sleep(1)
-            chrome.find_element_by_xpath(
-                '/html/body/div/div[2]/div/div[2]/div[2]/div/div[1]/div[2]/form/table/tbody/tr[2]/td[6]/span/input').click()
 
         except:
             print(CellList[x] + "Update fail")
@@ -1354,14 +1410,20 @@ def LaboPowerBCColorContactlens(counter, Url, CellList):
     for x in counter:
         try:
             chrome.get('https://www.lens-labo.com/cart/main')
-            try:
-                wait = ui.WebDriverWait(chrome, 5)
-                wait.until(lambda driver: chrome.find_element_by_xpath(
-                    "/html/body/div[1]/div[1]/article/section[2]/section/form[1]/table/tbody/tr/td[5]/div/p/input"))
-                chrome.find_element_by_xpath(
-                    '/html/body/div[1]/div[1]/article/section[2]/section/form[1]/table/tbody/tr/td[5]/div/p/input').click()
-            except:
-                pass
+            while 1:
+                start = time.process_time()
+                try:
+                    chrome.find_element_by_xpath(
+                        '/html/body/div[1]/div[1]/article/section[2]/section/form[1]/table/tbody/tr/td[5]/div/p/input').click()
+                    end = time.process_time()
+                    break
+                except:
+                    if start > 2:
+                        end = time.process_time()
+                        break
+                        print("over 2 seconds")
+
+            print('定位耗费时间：' + str(end - start))
             chrome.get(Url[x])
 
             if x == 1:
@@ -1444,22 +1506,30 @@ def LaboPowerBCColorContactlens(counter, Url, CellList):
             failList.append(CellList[x])
 
 
-
-
 if __name__ == '__main__':
 
-    # WEBSITE: LENSMODE
+
     options = Options()
     options.add_argument("--disable-notifications")
     options.add_argument("--start-maximized")
 
     chrome: WebDriver = webdriver.Chrome('./chromedriver', options=options)
 
+    # WEBSITE: LENSMODE
     chrome.get("https://www.lensmode.com/auth/login/redirectUrl/%252Fmypage%252Findex%252F/")
 
     chrome.find_element_by_xpath("/html/body/div[3]/div[2]/div[1]/article/form[1]/table/tbody/tr[2]/td[2]/input[1]").send_keys('lensmamajp@gmail.com')
     chrome.find_element_by_xpath("/html/body/div[3]/div[2]/div[1]/article/form[1]/table/tbody/tr[3]/td[2]/input").send_keys('kk20201201')
-    chrome.find_element_by_xpath('/html/body/div[3]/div[2]/div[1]/article/form[1]/table/tbody/tr[4]/td/input[2]').click()
+
+    while 1:
+        start = time.process_time()
+        try:
+            chrome.find_element_by_xpath('/html/body/div[3]/div[2]/div[1]/article/form[1]/table/tbody/tr[4]/td/input[2]').click()
+            end = time.process_time()
+            break
+        except:
+            print("还未定位到元素!")
+    print('定位耗费时间：' + str(end - start))
 
     failList = []
     # Dailies Total 1
@@ -1553,9 +1623,15 @@ if __name__ == '__main__':
         'lensmamajp@gmail.com')
     chrome.find_element_by_xpath(
         "/html/body/div[3]/div[2]/div[1]/article/form[1]/table/tbody/tr[3]/td[2]/input").send_keys('kk20201201')
-    chrome.find_element_by_xpath(
-        '/html/body/div[3]/div[2]/div[1]/article/form[1]/table/tbody/tr[4]/td/input[2]').click()
-
+    while 1:
+        start = time.process_time()
+        try:
+            chrome.find_element_by_xpath('/html/body/div[3]/div[2]/div[1]/article/form[1]/table/tbody/tr[4]/td/input[2]').click()
+            end = time.process_time()
+            break
+        except:
+            print("还未定位到元素!")
+    print('定位耗费时间：' + str(end - start))
 
     # 1 Day Acuvue Define RC
     counter = [1, 2, 4, 6, 8]
@@ -1831,11 +1907,16 @@ if __name__ == '__main__':
     chrome.find_element_by_name(
         'passwd').send_keys(
         'kk20201201')
-    wait = ui.WebDriverWait(chrome, 10)
-    wait.until(lambda driver: chrome.find_element_by_xpath(
-        '/html/body/div[1]/div[2]/main/section/div[1]/section[1]/form/button'))
-    chrome.find_element_by_xpath(
-        '/html/body/div[1]/div[2]/main/section/div[1]/section[1]/form/button').click()
+    while 1:
+        start = time.process_time()
+        try:
+            chrome.find_element_by_xpath('/html/body/div[1]/div[2]/main/section/div[1]/section[1]/form/button').click()
+            end = time.process_time()
+            break
+        except:
+            print("还未定位到元素!")
+    print('定位耗费时间：' + str(end - start))
+
 
     # 1 Day Acuvue Oasys
     counter = [1, 2, 4, 6, 8]
@@ -1911,8 +1992,16 @@ if __name__ == '__main__':
     chrome.find_element_by_id(
         'pw_form').send_keys(
         'kk20201201')
-    chrome.find_element_by_class_name(
-        'button').click()
+    while 1:
+        start = time.process_time()
+        try:
+            chrome.find_element_by_class_name('button').click()
+            end = time.process_time()
+            break
+        except:
+            print("还未定位到元素!")
+    print('定位耗费时间：' + str(end - start))
+
 
     # 1 Day Acuvue Oasys
     counter = [1, 2, 4, 6, 8]
@@ -1987,8 +2076,16 @@ if __name__ == '__main__':
     chrome.find_element_by_id(
         'pw_form').send_keys(
         'kk20201201')
-    chrome.find_element_by_class_name(
-        'button').click()
+    while 1:
+        start = time.process_time()
+        try:
+            chrome.find_element_by_class_name('button').click()
+            end = time.process_time()
+            break
+        except:
+            print("还未定位到元素!")
+    print('定位耗费时间：' + str(end - start))
+
 
     # 1 Day Acuvue Oasys
     counter = [1, 2, 4, 6, 8]
